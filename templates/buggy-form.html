@@ -3,11 +3,26 @@
 {% block content %}
 
   <h1>Make buggy</h1>
+  
+  <p> {{msg}} </p>
 
   <form action="/new" method="post">
+  	<label for="id">Buggy ID:</label>
+  	<input type="number" name="id" />
+  	<p></p>
     <label for="qty_wheels">Number of wheels:</label>
     <input type="text" name="qty_wheels" />
+    <p></p>
+    <label for="flag_color">Colour of flag:</label> 
+	<input type="text" name="flag_color" />
+	<p></p>
+	<label for="flag_color_secondary">Secondary colour of flag:</label> 
+	<input type="text" name="flag_color_secondary" />
+	<p></p>
+	<label for="flag_pattern">Pattern of flag:</label> 
+	<input type="text" name="flag_pattern" />
     <input type="submit" class="button">
+    
   </form>
 
   <p>
