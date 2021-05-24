@@ -2,31 +2,139 @@
 
 {% block content %}
 
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=number], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+  }
+  .home {
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: left;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+  .container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+
+  .col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+  }
+
+  .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+      width: 100%;
+      margin-top: 0;
+    }
+  }
+</style>
   <h1>Make buggy</h1>
   
   <p> {{msg}} </p>
-
+  <p> {{msg2}} </p>
+<div class="container">
   <form action="/new" method="post">
-  	<label for="id">Buggy ID:</label>
-  	<input type="number" name="id" />
-  	<p></p>
-    <label for="qty_wheels">Number of wheels:</label>
-    <input type="text" name="qty_wheels" />
-    <p></p>
-    <label for="flag_color">Colour of flag:</label> 
-	<input type="text" name="flag_color" />
-	<p></p>
-	<label for="flag_color_secondary">Secondary colour of flag:</label> 
-	<input type="text" name="flag_color_secondary" />
-	<p></p>
-	<label for="flag_pattern">Pattern of flag:</label> 
-	<input type="text" name="flag_pattern" />
-    <input type="submit" class="button">
-    
+	
+	<div class="row">
+	    <div class="col-25">
+	      <label for="id">Buggy ID:</label>
+	    </div>
+	    <div class="col-75">
+			<input type="number" id="id" name="id" placeholder="ID...">
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="qty_wheels">Number of wheels:</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="text" id="qty_wheels" name="qty_wheels" placeholder="Quantity of wheels...">
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="flag_color">Colour of flag:</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="text" id="flag_color" name="flag_color" placeholder="Color of the flag...">
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="flag_color_secondary">Secondary flag colour:</label> 
+	    </div>
+	    <div class="col-75">
+	      <input type="text" id="flag_color_secondary" name="flag_color_secondary" placeholder="Color of the secondary flag...">
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="flag_pattern">Pattern of flag:</label>  
+	    </div>
+	    <div class="col-75">
+	      <input type="text" id="flag_pattern" name="flag_pattern" placeholder="Pattern of the flag..." >
+	    </div>
+	  </div>
+	  <div class="row">
+	    <input type="submit" class="button">
+		<a href="/" class="button home">home</a>
+	  </div>
   </form>
-
-  <p>
-    <a href="/" class="button">home</a>
-  </p>
+</div>
 
 {% endblock %}

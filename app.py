@@ -27,17 +27,33 @@ def create_buggy():
         return render_template("buggy-form.html")
     elif request.method == 'POST':
         msg=""
+        msg2=""
         qty_wheels = request.form['qty_wheels']
         flag_color = request.form['flag_color']
-        if not qty_wheels.isdigit():
-            msg = f"Oh noes, that is not a number: {qty_wheels}"
-            return render_template("buggy-form.html", msg = msg)
+        flag_color_secondary = request.form['flag_color_secondary']
+        flag_pattern = request.form['flag_pattern']
+        
+        form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern]
+        
+        for i in range(0, len(form_store)):
+            if form_store[i] == "":
+                msg = "Insert the text in all the fields"
+        if  not qty_wheels.strip().isdigit() and qty_wheels.strip() != "":
+            msg += f"Oh noes, that is not a number: {qty_wheels}"
+        if flag_color.strip().isdigit():
+            msg2 = f"Oh noes, that is not a text: {flag_color}"
+        elif flag_color_secondary.strip().isdigit():
+            msg2 = f"Oh noes, that is not a text: {flag_color_secondary}"
+        elif flag_pattern.strip().isdigit():
+            msg2 = f"Oh noes, that is not a text: {flag_pattern}"
+        if msg != "" or msg2 != "":
+            return render_template("buggy-form.html", msg=msg, msg2=msg2)
         try:
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, flag_color=? WHERE id=?",
-                    (qty_wheels, flag_color, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"
