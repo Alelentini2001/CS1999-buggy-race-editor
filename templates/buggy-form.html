@@ -147,6 +147,27 @@
 	    </div>
 	  </div>
 	  <div class="row">
+	    <div class="col-25">
+	      <label for="flag_pattern">Type of Power:</label>  
+	    </div>
+	    <div class="col-75">
+		  <select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ prev_power_type }}" required>
+			  <option></option>
+			  <option {% if 'petrol' == prev_power_type %} selected {% endif %} value="petrol">Petrol</option>
+			  <option {% if 'fusion' == prev_power_type %} selected {% endif %} value="fusion">Fusion</option>
+			  <option {% if 'steam' == prev_power_type %} selected {% endif %} value="steam">Steam</option>
+			  <option {% if 'bio' == prev_power_type %} selected {% endif %} value="bio">Bio</option>
+			  <option {% if 'electric' == prev_power_type %} selected {% endif %} value="electric">Electric</option>
+			  <option {% if 'rocket' == prev_power_type %} selected {% endif %} value="rocket">Rocket</option>
+			  <option {% if 'hamster' == prev_power_type %} selected {% endif %} value="hamster">Hamster</option>
+			  <option {% if 'thermo' == prev_power_type %} selected {% endif %} value="thermo">Thermo</option>
+			  <option {% if 'solar' == prev_power_type %} selected {% endif %} value="solar">Solar</option>
+			  <option {% if 'wind' == prev_power_type %} selected {% endif %} value="wind">Wind</option>
+		  </select>
+	    </div>
+	  </div>
+	  
+	  <div class="row">
 	    <input type="submit" class="button">
 		<a href="/" class="button home">home</a>
 	  </div>
