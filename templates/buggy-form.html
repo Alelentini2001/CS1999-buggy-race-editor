@@ -84,7 +84,6 @@
   }
 </style>
   <h1>Make buggy</h1>
-  
   <p> {{msg}} </p>
   <p> {{msg2}} </p>
 <div class="container">
@@ -95,7 +94,8 @@
 	      <label for="id">Buggy ID:</label>
 	    </div>
 	    <div class="col-75">
-			<input type="number" id="id" name="id" placeholder="ID...">
+			<input type="number" id="id" name="id" value="{{ prev_id }}" placeholder="ID...">
+			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the Buggy ID (default value 1)</p>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -103,7 +103,8 @@
 	      <label for="qty_wheels">Number of wheels:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="qty_wheels" name="qty_wheels" placeholder="Quantity of wheels...">
+	      <input type="text" id="qty_wheels" name="qty_wheels" value="{{ prev_qty_wheels }}" placeholder="Quantity of wheels... ">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -111,7 +112,8 @@
 	      <label for="flag_color">Colour of flag:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="flag_color" name="flag_color" placeholder="Color of the flag...">
+	      <input type="text" id="flag_color" name="flag_color" value="{{ prev_flag_color }}" placeholder="Color of the flag...">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">CSS-colours (example: #ff0000 or red)</p>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -119,7 +121,8 @@
 	      <label for="flag_color_secondary">Secondary flag colour:</label> 
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="flag_color_secondary" name="flag_color_secondary" placeholder="Color of the secondary flag...">
+	      <input type="text" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" placeholder="Color of the secondary flag...">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">CSS-colours (example: #ff0000 or red)</p>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -127,7 +130,16 @@
 	      <label for="flag_pattern">Pattern of flag:</label>  
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="flag_pattern" name="flag_pattern" placeholder="Pattern of the flag..." >
+		  <select id="flag_pattern" name="flag_pattern" style="height: 50px; font-size: 16px" value="{{ prev_flag_pattern }}" required>
+			  <option></option>
+			  <option {% if 'plain' == prev_flag_pattern %} selected {% endif %} value="plain">Plain pattern</option>
+			  <option {% if 'vstripe' == prev_flag_pattern %} selected {% endif %} value="vstripe">Vertical stripe</option>
+			  <option {% if 'hstripe' == prev_flag_pattern %} selected {% endif %} value="hstripe">Horizontal stripe</option>
+			  <option {% if 'dstripe' == prev_flag_pattern %} selected {% endif %} value="dstripe">Diagonal stripe</option>
+			  <option {% if 'checker' == prev_flag_pattern %} selected {% endif %} value="checker">Checker</option>
+			  <option {% if 'spot' == prev_flag_pattern %} selected {% endif %} value="spot">Spot</option>
+		  </select>
+	      <!--<input type="text" id="flag_pattern" name="flag_pattern" value="{{ prev_flag_pattern }}" placeholder="Pattern of the flag..." >-->
 	    </div>
 	  </div>
 	  <div class="row">

@@ -23,23 +23,51 @@ def home():
 #------------------------------------------------------------
 @app.route('/new', methods = ['POST', 'GET'])
 def create_buggy():
+    msg=""
+    msg2=""
     if request.method == 'GET':
-        return render_template("buggy-form.html")
+        with sql.connect(DATABASE_FILE) as con:
+            cur = con.cursor()
+            cur.execute("SELECT id FROM buggies")
+            prev_id = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            
+            cur.execute("SELECT qty_wheels FROM buggies")
+            prev_qty_wheels = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            
+            cur.execute("SELECT flag_color FROM buggies")
+            prev_flag_color = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            
+            cur.execute("SELECT flag_color_secondary FROM buggies")
+            prev_flag_color_secondary = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            
+            cur.execute("SELECT flag_pattern FROM buggies")
+            prev_flag_pattern = str(cur.fetchone()).replace(",","").replace("(","").replace(")","");
+            
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern]
+            for i in range(0, len(prev_form_store)):
+                if prev_form_store[i] != "''":
+                    prev_form_store[i] = prev_form_store[i].replace("'","")
+                else:
+                    prev_form_store[i] = "None"
+            return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4])
     elif request.method == 'POST':
-        msg=""
-        msg2=""
+        msg = ""
+        msg2 = ""
         qty_wheels = request.form['qty_wheels']
         flag_color = request.form['flag_color']
         flag_color_secondary = request.form['flag_color_secondary']
         flag_pattern = request.form['flag_pattern']
         
         form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern]
+       
         
         for i in range(0, len(form_store)):
             if form_store[i] == "":
                 msg = "Insert the text in all the fields"
-        if  not qty_wheels.strip().isdigit() and qty_wheels.strip() != "":
+        if  not request.form["qty_wheels"].strip().isdigit():
             msg += f"Oh noes, that is not a number: {qty_wheels}"
+        if int(qty_wheels) in range(0,4):
+            msg += "Oh noes, the number of wheels can't be less than 4!"
         if flag_color.strip().isdigit():
             msg2 = f"Oh noes, that is not a text: {flag_color}"
         elif flag_color_secondary.strip().isdigit():
@@ -47,7 +75,7 @@ def create_buggy():
         elif flag_pattern.strip().isdigit():
             msg2 = f"Oh noes, that is not a text: {flag_pattern}"
         if msg != "" or msg2 != "":
-            return render_template("buggy-form.html", msg=msg, msg2=msg2)
+            return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, msg=msg, msg2=msg2)
         try:
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
