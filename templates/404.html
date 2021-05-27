@@ -5,10 +5,16 @@
     <link href="static/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
   </head>
   <body>
+
     <div class="main-content">
+		
+		<iframe src="https://lottiefiles.com/iframe/25005-404-hamster-wheel" width="640" height="640" frameBorder="0" style="display: block; margin: 0 auto" alt="404Error" ></iframe>
+		
+		{% block content %}{% endblock %}
 
-      {% block content %}{% endblock %}
-
+	    <p>
+	      <a href="/" class="button">home</a>
+	    </p>
     </div>
   </body>
 </html>
