@@ -67,6 +67,7 @@ def create_buggy():
         flag_color = request.form['flag_color']
         flag_color_secondary = request.form['flag_color_secondary']
         flag_pattern = request.form['flag_pattern']
+        total_cost = 0
         
         form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern]
        
@@ -86,17 +87,19 @@ def create_buggy():
             msg2 = f"Oh noes, that is not a text: {flag_pattern}"
         if msg != "" or msg2 != "":
             return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, msg=msg, msg2=msg2)
+        
         try:
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"
-        except:
+        except sql.connect(DATABASE_FILE).Error as err:
             con.rollback()
+            print("Something went wrong: {}".format(err))
             msg = "error in update operation"
         finally:
             con.close()

@@ -123,8 +123,10 @@
 	      <label for="flag_color_secondary">Secondary flag colour:</label> 
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" placeholder="Color of the secondary flag...">
-		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">CSS-colours (example: #ff0000 or red)</p>
+			<input type="color" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" style="border: 1px solid black; background-color: {{ prev_flag_color_secondary }}" oninput="this.style.setProperty('background-color', this.value)">
+	        <!-- 
+			<input type="text" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" placeholder="Color of the secondary flag..."> -->
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Select the CSS-colour from this square (saved as example: #ff0000 or red)</p>
 	    </div>
 	  </div>
 	  <div class="row">
