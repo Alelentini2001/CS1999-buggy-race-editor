@@ -17,6 +17,16 @@ def home():
     return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL)
 
 #------------------------------------------------------------
+# the error page
+#------------------------------------------------------------
+# app name
+@app.errorhandler(404)
+  
+# inbuilt function which takes error as parameter
+def not_found(e):
+  return render_template("404.html")
+
+#------------------------------------------------------------
 # creating a new buggy:
 #  if it's a POST request process the submitted data
 #  but if it's a GET request, just show the form
