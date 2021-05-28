@@ -75,13 +75,19 @@ def create_buggy():
             except:
                 prev_power_type = "None"
             
-            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type]
+            try:    
+                cur.execute("SELECT power_units FROM buggies")
+                prev_power_units = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_power_units = 0
+            
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units]
             for i in range(0, len(prev_form_store)):
                 if prev_form_store[i] != "''":
-                    prev_form_store[i] = prev_form_store[i].replace("'","")
+                    prev_form_store[i] = str(prev_form_store[i]).replace("'","")
                 else:
                     prev_form_store[i] = "None"
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5])
+        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -91,8 +97,9 @@ def create_buggy():
         flag_pattern = request.form['flag_pattern']
         total_cost = 0
         power_type = request.form['power_type']
+        power_units = request.form['power_units']
         
-        form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type]
+        form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units]
        
         
         for i in range(0, len(form_store)):
@@ -110,15 +117,26 @@ def create_buggy():
         elif flag_pattern.strip().isdigit():
             msg2 = f"Oh noes, that is not a text: {flag_pattern}"
         '''
+        if power_type in ["fusion", "thermo", "solar", "wind"] and int(power_units) > 1:
+            msg2 += "You can use only one unit for this power types --> Change the number to 1 to use it"
         if msg != "" or msg2 != "":
-            return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, msg=msg, msg2=msg2)
+            return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, prev_power_units=power_units, msg=msg, msg2=msg2)
+        power_type_consumables = {"petrol": 4, "steam":3, "bio":5, "electric":20, "rocket": 16, "hamster": 3}
+        power_type_non_consumables = {"fusion": 400, "thermo": 300, "solar": 40, "wind": 20}
         
+        if power_type in power_type_consumables:
+            total_cost += power_type_consumables[power_type]*int(power_units)
+        elif power_type in power_type_non_consumables:
+            if total_cost == 0:
+                total_cost = power_type_non_consumables[power_type]*int(power_units)
+            else:
+                total_cost *= power_type_non_consumables[power_type]
         try:
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, total_cost=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"

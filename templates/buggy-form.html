@@ -84,8 +84,8 @@
   }
 </style>
   <h1>Make buggy</h1>
-  <p> {{msg}} </p>
-  <p> {{msg2}} </p>
+  <p style="color: red"> {{msg}} </p>
+  <p style="color: red"> {{msg2}} </p>
 <div class="container">
   <form action="/new" method="post">
 	
@@ -103,7 +103,7 @@
 	      <label for="qty_wheels">Number of wheels:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="text" id="qty_wheels" name="qty_wheels" value="{{ prev_qty_wheels }}" placeholder="Quantity of wheels... ">
+	      <input type="number" id="qty_wheels" name="qty_wheels" value="{{ prev_qty_wheels }}" placeholder="Quantity of wheels... ">
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
 	    </div>
 	  </div>
@@ -148,7 +148,7 @@
 	  </div>
 	  <div class="row">
 	    <div class="col-25">
-	      <label for="flag_pattern">Type of Power:</label>  
+	      <label for="power_type">Type of Power:</label>  
 	    </div>
 	    <div class="col-75">
 		  <select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ prev_power_type }}" required>
@@ -164,6 +164,15 @@
 			  <option {% if 'solar' == prev_power_type %} selected {% endif %} value="solar">Solar</option>
 			  <option {% if 'wind' == prev_power_type %} selected {% endif %} value="wind">Wind</option>
 		  </select>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="qty_wheels">Unit of fuel:</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="number" id="power_units" name="power_units" value="{{ prev_power_units }}" placeholder="Unit of fuel for the engine... ">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the engine</p>
 	    </div>
 	  </div>
 	  
