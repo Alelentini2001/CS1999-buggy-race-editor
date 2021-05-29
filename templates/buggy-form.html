@@ -111,6 +111,31 @@
 	  
 	  <div class="row">
 	    <div class="col-25">
+	      <label for="tyres">Type of Tyres:</label>  
+	    </div>
+	    <div class="col-75">
+		  <select id="tyres" name="tyres" style="height: 50px; font-size: 16px" value="{{ prev_tyres }}" required>
+			  <option></option>
+			  <option {% if 'knobbly' == prev_tyres %} selected {% endif %} value="knobbly">Knobbly</option>
+			  <option {% if 'slick' == prev_tyres %} selected {% endif %} value="slick">Slick</option>
+			  <option {% if 'steelband' == prev_tyres %} selected {% endif %} value="steelband">Steelband</option>
+			  <option {% if 'reactive' == prev_tyres %} selected {% endif %} value="reactive">Reactive</option>
+			  <option {% if 'maglev' == prev_tyres %} selected {% endif %} value="maglev">Maglev</option>
+		  </select>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="qty_tyres">Number of Tyres:</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="number" id="qty_tyres" name="qty_tyres" value="{{ prev_qty_tyres }}" placeholder="Quantity of tyres... ">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
+	    </div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="col-25">
 	      <label for="flag_color">Colour of flag:</label>
 	    </div>
 	    <div class="col-75">

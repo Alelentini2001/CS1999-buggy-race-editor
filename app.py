@@ -50,7 +50,16 @@ def create_buggy():
                 prev_qty_wheels = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
             except:
                 prev_qty_wheels = 4
-            
+            try:
+                cur.execute("SELECT tyres FROM buggies")
+                prev_tyres = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_tyres = 4
+            try:
+                cur.execute("SELECT qty_tyres FROM buggies")
+                prev_qty_tyres = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_qty_tyres = 4
             try:
                 cur.execute("SELECT flag_color FROM buggies")
                 prev_flag_color = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
@@ -105,13 +114,13 @@ def create_buggy():
             except:
                 prev_aux_hamster_booster = 0
             
-            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster]
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres]
             for i in range(0, len(prev_form_store)):
                 if prev_form_store[i] != "''":
                     prev_form_store[i] = str(prev_form_store[i]).replace("'","")
                 else:
                     prev_form_store[i] = "None"
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10])
+        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -119,15 +128,18 @@ def create_buggy():
         flag_color = request.form['flag_color']
         flag_color_secondary = request.form['flag_color_secondary']
         flag_pattern = request.form['flag_pattern']
-        total_cost = 0
         power_type = request.form['power_type']
         power_units = request.form['power_units']
         aux_power_type = request.form['aux_power_type']
         aux_power_units = request.form['aux_power_units']
         hamster_booster = request.form['hamster_booster']
         aux_hamster_booster = request.form['aux_hamster_booster']
+        tyres = request.form['tyres']
+        qty_tyres = request.form['qty_tyres']
+        total_cost = 0
         
-        form_store = [qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units]#, aux_power_type, aux_power_units]
+        
+        form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units]#, aux_power_type, aux_power_units]
        
         
         for i in range(0, len(form_store)):
@@ -137,6 +149,8 @@ def create_buggy():
             msg += f"Oh noes, that is not a number: {qty_wheels}; "
         if int(qty_wheels) in range(0,4):
             msg += "Oh noes, the number of wheels can't be less than 4!; "
+        if int(qty_tyres) < int(qty_wheels):
+            msg += "Oh noes, the number of tyres can't be less than the number of wheels!; "
         if power_type in ["fusion", "thermo", "solar", "wind"] and int(power_units) > 1:
             msg2 += "You can use only one unit for this power types --> Change the number to 1 to use it; "
         if aux_power_type in ["fusion", "thermo", "solar", "wind"] and int(aux_power_units) > 1:
@@ -146,6 +160,11 @@ def create_buggy():
             return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, prev_power_units=power_units, prev_aux_power_type=aux_power_type, prev_aux_power_units=aux_power_units, prev_hamster_booster=hamster_booster, prev_aux_hamster_booster=aux_hamster_booster, msg=msg, msg2=msg2)
         power_type_consumables = {"petrol": 4, "steam":3, "bio":5, "electric":20, "rocket": 16}#, "hamster": 3}
         power_type_non_consumables = {"fusion": 400, "thermo": 300, "solar": 40, "wind": 20}
+        
+        #TYRES
+        tyres_types = {"knobbly": 15, "slick": 10, "steelband": 20, "reactive": 40, "maglev": 50}
+        if tyres in tyres_types:
+            total_cost += tyres_types[tyres]*int(qty_tyres)
         
         #HAMSTER BOOSTERS
         if power_type == "hamster":
@@ -182,8 +201,8 @@ def create_buggy():
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, total_cost=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, total_cost, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, total_cost=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"
