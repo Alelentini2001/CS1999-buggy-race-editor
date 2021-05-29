@@ -33,7 +33,9 @@ connection.execute("""
     power_type            VARCHAR(20) DEFAULT "petrol",
     power_units           INTEGER DEFAULT 1,
     aux_power_type        VARCHAR(20) DEFAULT "none",
-    aux_power_units       INTEGER DEFAULT 0
+    aux_power_units       INTEGER DEFAULT 0,
+    hamster_booster       INTEGER DEFAULT 0,
+    aux_hamster_booster   INTEGER DEFAULT 0
   )
 
 """)

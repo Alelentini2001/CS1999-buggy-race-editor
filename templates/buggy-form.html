@@ -98,6 +98,7 @@
 			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the Buggy ID (default value 1)</p>
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="qty_wheels">Number of wheels:</label>
@@ -107,28 +108,27 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="flag_color">Colour of flag:</label>
 	    </div>
 	    <div class="col-75">
 		  <input type="color" id="flag_color" name="flag_color" value="{{ prev_flag_color }}" style="border: 1px solid black; background-color: {{ prev_flag_color }}" oninput="this.style.setProperty('background-color', this.value)">
-			<!--    <label for="head">Head</label>
-	      <input type="text" id="flag_color" name="flag_color" value="{{ prev_flag_color }}" placeholder="Color of the flag..."> -->
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Select the CSS-colour from this square (saved as example: #ff0000 or red)</p>
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="flag_color_secondary">Secondary flag colour:</label> 
 	    </div>
 	    <div class="col-75">
 			<input type="color" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" style="border: 1px solid black; background-color: {{ prev_flag_color_secondary }}" oninput="this.style.setProperty('background-color', this.value)">
-	        <!-- 
-			<input type="text" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" placeholder="Color of the secondary flag..."> -->
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Select the CSS-colour from this square (saved as example: #ff0000 or red)</p>
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="flag_pattern">Pattern of flag:</label>  
@@ -143,15 +143,15 @@
 			  <option {% if 'checker' == prev_flag_pattern %} selected {% endif %} value="checker">Checker</option>
 			  <option {% if 'spot' == prev_flag_pattern %} selected {% endif %} value="spot">Spot</option>
 		  </select>
-	      <!--<input type="text" id="flag_pattern" name="flag_pattern" value="{{ prev_flag_pattern }}" placeholder="Pattern of the flag..." >-->
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="power_type">Type of Power:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ prev_power_type }}" required>
+		  <select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ prev_power_type }}" onchange="displayDivDemo('check_hamster', this)" required>
 			  <option></option>
 			  <option {% if 'petrol' == prev_power_type %} selected {% endif %} value="petrol">Petrol</option>
 			  <option {% if 'fusion' == prev_power_type %} selected {% endif %} value="fusion">Fusion</option>
@@ -175,12 +175,39 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the engine</p>
 	    </div>
 	  </div>
+	  
+	  <!-- CHECK IF SELECTED POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
+	  <script>
+		  window.onpageshow = function() {
+		      document.getElementById("check_hamster").style.display = document.getElementById("power_type").value == "hamster" ? 'block' : 'none';
+			  document.getElementById("check_hamster_2").style.display = document.getElementById("aux_power_type").value == "hamster" ? 'block' : 'none';
+		  };
+	     function displayDivDemo(id, elementValue) {
+	        document.getElementById(id).style.display = elementValue.value == "hamster" ? 'block' : 'none';
+	     }
+	  </script>
+	  <style>
+	     #check_hamster {
+	        display: none;
+	     }
+	  </style>
+	<div class="row" id="check_hamster">
+		<div class="col-25">
+			<label for="hamster_booster">Unit of fuel for Hamster Booster:</label>
+		</div>
+		<div class="col-75">
+			<input type="number" id="hamster_booster" name="hamster_booster" value="{{ prev_hamster_booster }}" placeholder="Unit of fuel for the hamster booster... ">
+			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Hamster booster: </p>
+		</div>
+	</div>
+	<!-- ------------------------------------------------------------------ -->
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="power_type">Type of Auxiliary Power:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" value="{{ prev_aux_power_type }}" >
+		  <select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" value="{{ prev_aux_power_type }}" onchange="displayDivDemo('check_hamster_2', this)">
 			  <option value="none"></option>
 			  <option {% if 'petrol' == prev_aux_power_type %} selected {% endif %} value="petrol">Petrol</option>
 			  <option {% if 'fusion' == prev_aux_power_type %} selected {% endif %} value="fusion">Fusion</option>
@@ -204,6 +231,22 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the auxiliary engine</p>
 	    </div>
 	  </div>
+    	  <!--CHECK IF SELECTED AUXILIARY POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
+    	  <style>
+    	     #check_hamster_2 {
+    	        display: none;
+    	     }
+    	  </style>
+    	<div class="row" id="check_hamster_2">
+    		<div class="col-25">
+    			<label for="hamster_booster">Unit of fuel for Auxiliary Hamster Booster:</label>
+    		</div>
+    		<div class="col-75">
+    			<input type="number" id="aux_hamster_booster" name="aux_hamster_booster" value="{{ prev_aux_hamster_booster }}" placeholder="Unit of fuel for the auxiliary hamster booster... ">
+    			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Auxiliary Hamster booster: </p>
+    		</div>
+    	</div>
+    	<!-- ------------------------------------------------------------------ -->
 	  
 	  <div class="row">
 	    <input type="submit" class="button">
