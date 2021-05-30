@@ -41,7 +41,8 @@ connection.execute("""
     armour                VARCHAR(20) DEFAULT "none",
     attack                VARCHAR(20) DEFAULT "none",
     qty_attacks           INTEGER DEFAULT 0,
-    fireproof             VARCHAR(20) DEFAULT "false"
+    fireproof             VARCHAR(20) DEFAULT "false",
+    insulated             VARCHAR(20) DEFAULT "false"
   )
 
 """)

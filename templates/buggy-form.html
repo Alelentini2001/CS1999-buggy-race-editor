@@ -317,11 +317,11 @@
 	      <label for="fireproof">Fireproof?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="fireproof" class="select_fireproof" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change()" required>
+  			<select id="fireproof" class="select_fireproof" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change_fireproof()" required>
   				<option {% if 'false' == prev_fireproof %} selected {% endif %} value="false">False</option>
   				<option {% if 'true' == prev_fireproof %} selected {% endif %} value="true">True</option>
 			</select>
-			<input type="button" class="home" id="fireproof" name="fireproof" value="Press to change" onclick="change()"/> 
+			<input type="button" class="home" id="fireproof" name="fireproof" value="Press to change" onclick="change_fireproof()"/> 
 	    </div>
 	  </div>
 	  <style>
@@ -347,7 +347,19 @@
 		  }
 	  </style>
 	  <script>
-		  function change()
+		  window.onpageshow = function() {
+		      if (document.getElementById("fireproof").value == "false"){
+		      	document.getElementById("fireproof").style.backgroundColor = "red"
+		      } else {
+		      	document.getElementById("fireproof").style.backgroundColor = "green"
+		      }
+		      if (document.getElementById("insulated").value == "false"){
+		      	document.getElementById("insulated").style.backgroundColor = "red"
+		      } else {
+		      	document.getElementById("insulated").style.backgroundColor = "green"
+		      }
+		  }
+		  function change_fireproof()
 		  {
 		      if (document.getElementById("fireproof").value=="false"){ 
 				  document.getElementById("fireproof").value = "true";
@@ -358,7 +370,30 @@
 				  document.getElementById("fireproof").style.backgroundColor = "red";
 			  }
 		  }
+		  function change_insulated()
+		  {
+		      if (document.getElementById("insulated").value=="false"){ 
+				  document.getElementById("insulated").value = "true";
+				  document.getElementById("insulated").style.backgroundColor = "green";
+			  }
+		      else {
+				  document.getElementById("insulated").value = "false";
+				  document.getElementById("insulated").style.backgroundColor = "red";
+			  }
+		  }
 	  </script>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="insulated">Insulated?</label>
+	    </div>
+	    <div class="col-75">
+  			<select id="insulated" class="select_fireproof" name="insulated" style="height: 50px; font-size: 16px" value="{{ prev_insulated }}" onchange="change_insulated()" required>
+  				<option {% if 'false' == prev_insulated %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == prev_insulated %} selected {% endif %} value="true">True</option>
+			</select>
+			<input type="button" class="home" id="insulated" name="insulated" value="Press to change" onclick="change_insulated()"/> 
+	    </div>
+	  </div>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">
