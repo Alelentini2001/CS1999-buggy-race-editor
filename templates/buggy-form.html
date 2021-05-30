@@ -129,6 +129,11 @@
 	          } else {
 	          	document.getElementById("antibiotic").style.backgroundColor = "green";
 	          }
+			  if (document.getElementById("banging").value == "false"){
+				  document.getElementById("banging").style.backgroundColor = "red";
+			  } else {
+				  document.getElementById("banging").style.backgroundColor = "green";
+			  }
 		  }
 	  function displayDivDemo(id, elementValue) {
 	     document.getElementById(id).style.display = elementValue.value == "hamster" ? 'block' : 'none';
@@ -164,6 +169,17 @@
 	      else {
 			  document.getElementById("antibiotic").value = "false";
 			  document.getElementById("antibiotic").style.backgroundColor = "red";
+		  }
+	  }
+	  function change_banging()
+	  {
+	      if (document.getElementById("banging").value=="false"){ 
+			  document.getElementById("banging").value = "true";
+			  document.getElementById("banging").style.backgroundColor = "green";
+		  }
+	      else {
+			  document.getElementById("banging").value = "false";
+			  document.getElementById("banging").style.backgroundColor = "red";
 		  }
 	  }
 </script>
@@ -412,6 +428,19 @@
   				<option {% if 'true' == prev_antibiotic %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="antibiotic" name="antibiotic" value="Press to change" onclick="change_antibiotic()"/> 
+	    </div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="banging">Banging Sound System?</label>
+	    </div>
+	    <div class="col-75">
+  			<select id="banging" class="selected" name="banging" style="height: 50px; font-size: 16px" value="{{ prev_banging }}" onchange="change_banging()" required>
+  				<option {% if 'false' == prev_banging %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == prev_banging %} selected {% endif %} value="true">True</option>
+			</select>
+			<input type="button" class="home" id="banging" name="banging" value="Press to change" onclick="change_banging()"/> 
 	    </div>
 	  </div>
 	  
