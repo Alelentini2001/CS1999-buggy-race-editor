@@ -231,8 +231,8 @@ def create_buggy():
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, total_cost=? WHERE id=?",
-                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, total_cost, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, total_cost=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"

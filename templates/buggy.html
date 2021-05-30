@@ -41,13 +41,6 @@
 	<tr>
 		<td>Units of Auxiliary Power:</td> <td> {{ buggy['aux_power_units'] }}</td>
 	</tr>
-  <!-- CHECK IF SELECTED POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
-  <script>
-	  window.onpageshow = function() {
-	      document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
-		  document.getElementById("check_hamster2_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
-	  };
-  </script>
   <style>
      #check_hamster_tr {
         display: hide;
@@ -65,6 +58,13 @@
   	<tr id="check_hamster2_tr">
 		<td>Units of Auxiliary Hamster Booster:</td> <td> {{ buggy['aux_hamster_booster'] }} </td>
   	</tr>
+    <!-- CHECK IF SELECTED POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
+    <script>
+  	  window.onpageshow = function() {
+  	      document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
+  		  document.getElementById("check_hamster2_tr").style.display = {{ buggy['aux_hamster_booster'] }} != 0 ? 'show' : 'hide';
+  	  };
+    </script>
 	<tr>
 		<td>Armour type:</td> <td> {{ buggy['armour'] }} </td>
 	</tr>
