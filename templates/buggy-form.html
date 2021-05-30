@@ -109,6 +109,16 @@
 	  display: inline-block;
 	  font-size: 16px;
   }
+  .limit_cost_button {
+      color: white;
+	  background-color: lightBlue;
+	  margin: -30px 0 0 0px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: left;
+  }
 </style>
 <script>
 		  window.onpageshow = function() {
@@ -182,13 +192,18 @@
 			  document.getElementById("banging").style.backgroundColor = "red";
 		  }
 	  }
+	  var form = document.getElementById("buggy-form");
+
+	  document.getElementById("your-id").addEventListener("click", function () {
+	    form.submit();
+	  });
 </script>
 
   <h1>Make buggy</h1>
   <p style="color: red"> {{msg}} </p>
   <p style="color: red"> {{msg2}} </p>
 <div class="container">
-  <form action="/new" method="post">
+  <form action="/new" method="post" id="buggy-form">
 	
 	<div class="row">
 	    <div class="col-25">
@@ -444,8 +459,21 @@
 	    </div>
 	  </div>
 	  
-	  <!-- 3-AUTOFILL -> ask for a cost limit when the button is pressed, and try to add items so that the buggy's total cost is within that limit. -->
-	  <div>
+	  <!-- 3-AUTOFILL -> ask for a cost limit when the button is pressed, and try to add items so that the buggy's total cost is within that limit.-->
+	 <div class="row" style="margin: 10px 0 0 0px; padding: 10px 10px 10px 10px; border: 1px solid black">
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="cost_limit">Cost Limit (random buggy):</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="number" id="cost_limit" name="cost_limit" value="{{ prev_cost_limit }}" placeholder="Insert the cost limit for the random buggy... ">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the cost limit for the random buggy (only consumable power used and 1 engine).</p>
+	    </div>
+		<a href="/buggy">
+			<input type="submit" class="limit_cost_button" id="limit_cost_button" name="limit_cost_button" value="Cost Limit - Build" />
+		</a>
+	  </div>
+ 	 </div>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">

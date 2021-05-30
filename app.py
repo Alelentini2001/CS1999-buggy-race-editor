@@ -178,6 +178,7 @@ def create_buggy():
         insulated = request.form['insulated']
         antibiotic = request.form['antibiotic']
         banging = request.form['banging']
+        cost_limit = request.form["cost_limit"]
         total_cost = 0
         
         form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, armour, attack]#, aux_power_type, aux_power_units]
@@ -205,6 +206,116 @@ def create_buggy():
         power_type_consumables = {"petrol": 4, "steam":3, "bio":5, "electric":20, "rocket": 16}#, "hamster": 3}
         power_type_non_consumables = {"fusion": 400, "thermo": 300, "solar": 40, "wind": 20}
         
+        #--------------------------------------------------------------------------------------------  
+        tyres_types_lim = {"knobbly": 15, "slick": 10, "steelband": 20, "reactive": 40, "maglev": 50}
+        armours_lim = {"none": 0, "wood": 40, "aluminium": 200, "thinsteel": 100, "thicksteel": 200, "titanium": 290}
+        attacks_lim = {"none": 0, "spike": 5, "flame": 20, "charge": 28, "biohazard": 30}
+        if cost_limit != "" and int(cost_limit)>0:
+            import random
+            cost_limit_start = int(cost_limit)
+            still_greater_than_zero = False
+            rnd_qty_tyres = 0
+            rnd_qty_power = 0
+            rnd_qty_attacks = 0
+            while still_greater_than_zero != True:
+                rnd_qty_tyres = random.randrange(4, 12, 2)#12 max number for security
+                rnd_tyres = random.choice(list(tyres_types_lim.values()))
+                rnd_tyres_total = rnd_tyres*rnd_qty_tyres
+                res = dict((v,k) for k,v in tyres_types_lim.items())
+                rnd_tyres_choice = res[rnd_tyres]
+                cost_limit = int(cost_limit)-rnd_tyres_total
+                if int(cost_limit) <= 0:
+                    while int(cost_limit) > 0:
+                        rnd_qty_tyres = random.randrange(4, 12, 2)#12 max number for security
+                        rnd_tyres = random.choice(list(tyres_types_lim.values()))
+                        rnd_tyres_total = rnd_tyres*rnd_qty_tyres
+                        res = dict((v,k) for k,v in tyres_types_lim.items())
+                        rnd_tyres_choice = res[rnd_tyres]
+                        cost_limit = int(cost_limit)-rnd_tyres_total
+                rnd_qty_power = random.randint(1,10)#10 for security
+                #ONLY consumable power for security of the code
+                rnd_power_type = random.choice(list(power_type_consumables.values()))
+                rnd_power_type_tot = rnd_power_type*rnd_qty_power
+                res2 = dict((v,k) for k,v in power_type_consumables.items())
+                rnd_power_type_choice = res2[rnd_power_type]
+                cost_limit = int(cost_limit)-rnd_power_type_tot
+                if int(cost_limit) <= 0:
+                    while int(cost_limit) > 0:
+                        rnd_qty_power = random.randint(1,10)#10 for security
+                        #ONLY consumable power for security of the code
+                        rnd_power_type = random.choice(list(power_type_consumables.values()))
+                        rnd_power_type_tot = rnd_power_type*rnd_qty_power
+                        res2 = dict((v,k) for k,v in power_type_consumables.items())
+                        rnd_power_type_choice = res2[rnd_power_type]
+                        cost_limit = int(cost_limit)-rnd_power_type_tot
+                
+                rnd_armour = random.choice(list(armours_lim.values()))
+                rnd_armour_tot = rnd_armour*rnd_qty_tyres
+                res3 = dict((v,k) for k,v in armours_lim.items())
+                rnd_armours_choice = res3[rnd_armour]
+                cost_limit = int(cost_limit)-rnd_armour_tot
+                if int(cost_limit) <= 0:
+                    while int(cost_limit) > 0:
+                        rnd_armour = random.choice(list(armours._limvalues()))
+                        rnd_armour_tot = rnd_armour*rnd_qty_tyres
+                        res3 = dict((v,k) for k,v in armours_lim.items())
+                        rnd_armours_choice = res3[rnd_power_type]
+                        cost_limit = int(cost_limit)-rnd_armour_tot
+                        
+                rnd_qty_attacks = random.randint(0,10)#10 max number for security
+                rnd_attacks = random.choice(list(tyres_types_lim.values()))
+                rnd_attacks_tot = rnd_attacks*rnd_qty_tyres
+                res = dict((v,k) for k,v in tyres_types_lim.items())
+                rnd_attacks_choice = res[rnd_tyres]
+                cost_limit = int(cost_limit)-rnd_attacks_tot
+                if int(cost_limit) <= 0:
+                    while int(cost_limit) > 0:
+                        rnd_qty_attacks = random.randint(0,10)#10 max number for security
+                        rnd_attacks = random.choice(list(tyres_types_lim.values()))
+                        rnd_attacks_tot = rnd_attacks*rnd_qty_tyres
+                        res = dict((v,k) for k,v in tyres_types_lim.items())
+                        rnd_attacks_choice = res[rnd_tyres]
+                        cost_limit = int(cost_limit)-rnd_attacks_tot
+                def getRandomCol():
+                    r = hex(random.randrange(0, 255))[2:]
+                    g = hex(random.randrange(0, 255))[2:]
+                    b = hex(random.randrange(0, 255))[2:]
+
+                    random_col = '#'+r+g+b
+                    return random_col
+                rnd_flag_color = getRandomCol()
+                rnd_flag_color_secondary = getRandomCol()
+                flags = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot"]
+                rnd_flag_pattern = flags[random.randint(0, len(flags)-1)]
+                aux_power_type = "none"
+                aux_power_units = 0
+                fireproof = "false"
+                insulated = "false"
+                antibiotic = "false"
+                banging = "false"
+                if int(cost_limit) >= 0:
+                    still_greater_than_zero = True
+                else:
+                    still_greater_than_zero = False
+                    cost_limit = cost_limit_start
+            try:
+                with sql.connect(DATABASE_FILE) as con:
+                    cur = con.cursor()
+                    cur.execute(
+                        "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, total_cost=? WHERE id=?",
+                        (rnd_qty_tyres, rnd_tyres_choice, rnd_qty_tyres, rnd_flag_color, rnd_flag_color_secondary, rnd_flag_pattern, rnd_power_type_choice, rnd_qty_power, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, rnd_armours_choice, rnd_attacks_choice, rnd_qty_attacks, fireproof, insulated, antibiotic, banging, cost_limit, DEFAULT_BUGGY_ID)
+                       )
+                    con.commit()
+                    msg = "Record successfully saved"
+            except sql.connect(DATABASE_FILE).Error as err:
+                con.rollback()
+                print("Something went wrong: {}".format(err))
+                msg = "error in update operation"
+            finally:
+                con.close()
+            return render_template("updated.html", msg = msg)
+            
+        #--------------------------------------------------------------------------------------------
         #TYRES
         tyres_types = {"knobbly": 15, "slick": 10, "steelband": 20, "reactive": 40, "maglev": 50}
         if tyres in tyres_types:
@@ -272,8 +383,8 @@ def create_buggy():
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, total_cost=? WHERE id=?",
-                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, total_cost, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, total_cost=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"

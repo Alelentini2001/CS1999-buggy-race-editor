@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <style>
+     #check_hamster_tr {
+        display: hide;
+	    padding: 0.25em;
+	    border: 1px solid #999999;
+	    padding: 0.5rem;
+     }
+     #check_hamster2_tr {
+        display: hide;
+	    padding: 0.25em;
+	    border: 1px solid #999999;
+	    padding: 0.5rem;
+     }
+  </style>
+  
+  <script>
+  	 	window.onpageshow = function() {
+  	     	document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
+  		 	document.getElementById("check_hamster2_tr").style.display = {{ buggy['aux_hamster_booster'] }} != 0 ? 'show' : 'hide';
+  	  }
+  </script>
 
   <h1>Buggy</h1>
 
@@ -41,30 +62,9 @@
 	<tr>
 		<td>Units of Auxiliary Power:</td> <td> {{ buggy['aux_power_units'] }}</td>
 	</tr>
-  <style>
-     #check_hamster_tr {
-        display: hide;
-	    padding: 0.25em;
-	    border: 1px solid #999999;
-	    padding: 0.5rem;
-     }
-     #check_hamster2_tr {
-        display: hide;
-	    padding: 0.25em;
-	    border: 1px solid #999999;
-	    padding: 0.5rem;
-     }
-  </style>
   	<tr id="check_hamster2_tr">
 		<td>Units of Auxiliary Hamster Booster:</td> <td> {{ buggy['aux_hamster_booster'] }} </td>
   	</tr>
-    <!-- CHECK IF SELECTED POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
-    <script>
-  	  window.onpageshow = function() {
-  	      document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
-  		  document.getElementById("check_hamster2_tr").style.display = {{ buggy['aux_hamster_booster'] }} != 0 ? 'show' : 'hide';
-  	  };
-    </script>
 	<tr>
 		<td>Armour type:</td> <td> {{ buggy['armour'] }} </td>
 	</tr>
@@ -85,6 +85,9 @@
 	</tr>
 	<tr>
 		<td>Banging sound system?</td> <td> {{ buggy['banging'] }} </td>
+	</tr>
+	<tr>
+		<td>Cost Limit:</td> <td> {{ cost_limit }} </td>
 	</tr>
 	<tr>
 		<td style="background-color: yellow">Total Cost:</td> <td style="background-color: yellow"> {{ buggy['total_cost'] }} </td>
