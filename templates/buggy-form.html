@@ -301,6 +301,7 @@
 		  </select>
 	    </div>
 	  </div>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="qty_attacks">Unit of fuel:</label>
@@ -310,6 +311,54 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of attacks you want to do</p>
 	    </div>
 	  </div>
+	  
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="fireproof">Fireproof?</label>
+	    </div>
+	    <div class="col-75">
+  			<select id="fireproof" class="select_fireproof" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change()" required>
+  				<option {% if 'false' == prev_fireproof %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == prev_fireproof %} selected {% endif %} value="true">True</option>
+			</select>
+			<input type="button" class="home" id="fireproof" name="fireproof" value="Press to change" onclick="change()"/> 
+	    </div>
+	  </div>
+	  <style>
+		  .button_change{
+			  background-color: #fffff;
+			  border: 1px solid black;
+			  color: black;
+			  padding: 15px 32px;
+			  text-align: center;
+			  text-decoration: none;
+			  display: inline-block;
+			  font-size: 16px;
+		  }
+		  .select_fireproof{
+			  background-color: red;
+			  border: none;
+			  color: white;
+			  padding: 15px 32px;
+			  text-align: center;
+			  text-decoration: none;
+			  display: inline-block;
+			  font-size: 16px;
+		  }
+	  </style>
+	  <script>
+		  function change()
+		  {
+		      if (document.getElementById("fireproof").value=="false"){ 
+				  document.getElementById("fireproof").value = "true";
+				  document.getElementById("fireproof").style.backgroundColor = "green";
+			  }
+		      else {
+				  document.getElementById("fireproof").value = "false";
+				  document.getElementById("fireproof").style.backgroundColor = "red";
+			  }
+		  }
+	  </script>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">

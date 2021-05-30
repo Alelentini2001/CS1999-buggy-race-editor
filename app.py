@@ -128,14 +128,19 @@ def create_buggy():
                 prev_qty_attacks = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
             except:
                 prev_qty_attacks = "none"
+            try:
+                cur.execute("SELECT fireproof FROM buggies")
+                prev_fireproof = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_fireproof = "false"
             
-            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour, prev_attack, prev_qty_attacks]
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour, prev_attack, prev_qty_attacks, prev_fireproof]
             for i in range(0, len(prev_form_store)):
                 if prev_form_store[i] != "''":
                     prev_form_store[i] = str(prev_form_store[i]).replace("'","")
                 else:
                     prev_form_store[i] = "None"
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13], prev_attack=prev_form_store[14], prev_qty_attacks=prev_form_store[15])
+        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13], prev_attack=prev_form_store[14], prev_qty_attacks=prev_form_store[15], prev_fireproof=prev_form_store[16])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -154,6 +159,7 @@ def create_buggy():
         armour = request.form['armour']
         attack = request.form['attack']
         qty_attacks = request.form['qty_attacks']
+        fireproof = request.form['fireproof']
         total_cost = 0
         
         
@@ -196,6 +202,10 @@ def create_buggy():
         attacks = {"none": 0, "spike": 5, "flame": 20, "charge": 28, "biohazard": 30}
         total_cost += attacks[attack]*int(qty_attacks)
         
+        #FIREPROOF
+        if fireproof == "true":
+            total_cost += 70
+        
         #HAMSTER BOOSTERS
         if power_type == "hamster":
             total_cost += int(power_units)*3
@@ -231,8 +241,8 @@ def create_buggy():
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, total_cost=? WHERE id=?",
-                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, total_cost, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, attack=?, qty_attacks=?, fireproof=?, total_cost=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, fireproof, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"
