@@ -37,7 +37,8 @@ connection.execute("""
     hamster_booster       INTEGER DEFAULT 0,
     aux_hamster_booster   INTEGER DEFAULT 0,
     tyres                 VARCHAR(20) DEFAULT "knobbly",
-    qty_tyres             INTEGER DEFAULT 4
+    qty_tyres             INTEGER DEFAULT 4,
+    armour                VARCHAR(20) DEFAULT "none"
   )
 
 """)

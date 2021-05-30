@@ -113,14 +113,19 @@ def create_buggy():
                 prev_aux_hamster_booster = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
             except:
                 prev_aux_hamster_booster = 0
+            try:
+                cur.execute("SELECT armour FROM buggies")
+                prev_armour = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_armour = "none"
             
-            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres]
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour]
             for i in range(0, len(prev_form_store)):
                 if prev_form_store[i] != "''":
                     prev_form_store[i] = str(prev_form_store[i]).replace("'","")
                 else:
                     prev_form_store[i] = "None"
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12])
+        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -136,12 +141,13 @@ def create_buggy():
         aux_hamster_booster = request.form['aux_hamster_booster']
         tyres = request.form['tyres']
         qty_tyres = request.form['qty_tyres']
+        armour = request.form['armour']
         total_cost = 0
         
         
-        form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units]#, aux_power_type, aux_power_units]
+        form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, armour]#, aux_power_type, aux_power_units]
        
-        
+        #----ERRORS------------------------------------------------------------------------------------
         for i in range(0, len(form_store)):
             if form_store[i] == "":
                 msg = "Insert the text in all the fields; "
@@ -158,6 +164,7 @@ def create_buggy():
         
         if msg != "" or msg2 != "":
             return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, prev_power_units=power_units, prev_aux_power_type=aux_power_type, prev_aux_power_units=aux_power_units, prev_hamster_booster=hamster_booster, prev_aux_hamster_booster=aux_hamster_booster, msg=msg, msg2=msg2)
+        #----------------------------------------------------------------------------------------------        
         power_type_consumables = {"petrol": 4, "steam":3, "bio":5, "electric":20, "rocket": 16}#, "hamster": 3}
         power_type_non_consumables = {"fusion": 400, "thermo": 300, "solar": 40, "wind": 20}
         
@@ -165,6 +172,13 @@ def create_buggy():
         tyres_types = {"knobbly": 15, "slick": 10, "steelband": 20, "reactive": 40, "maglev": 50}
         if tyres in tyres_types:
             total_cost += tyres_types[tyres]*int(qty_tyres)
+        
+        #ARMOUR
+        armours = {"none": 0, "wood": 40, "aluminium": 200, "thinsteel": 100, "thicksteel": 200, "titanium": 290}
+        if int(qty_tyres) == 4:
+            total_cost += armours[armour]
+        elif int(qty_tyres) > 4:
+            total_cost += ((((int(qty_tyres)-4)*10)/100)*armours[armour])+armours[armour]
         
         #HAMSTER BOOSTERS
         if power_type == "hamster":
@@ -201,8 +215,8 @@ def create_buggy():
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, total_cost=? WHERE id=?",
-                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, total_cost, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies SET qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, total_cost=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, aux_hamster_booster=?, armour=?, total_cost=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, total_cost, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, total_cost, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"

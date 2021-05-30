@@ -272,6 +272,21 @@
     		</div>
     	</div>
     	<!-- ------------------------------------------------------------------ -->
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="armour">Type of Armour:</label>  
+	    </div>
+	    <div class="col-75">
+		  <select id="armour" name="armour" style="height: 50px; font-size: 16px" value="{{ prev_armour }}" required>
+			  <option {% if 'none' == prev_armour %} selected {% endif %} value="none">None</option>
+			  <option {% if 'wood' == prev_armour %} selected {% endif %} value="wood">Wood</option>
+			  <option {% if 'aluminium' == prev_armour %} selected {% endif %} value="aluminium">Aluminium</option>
+			  <option {% if 'thinsteel' == prev_armour %} selected {% endif %} value="thinsteel">Thinsteel</option>
+			  <option {% if 'thicksteel' == prev_armour %} selected {% endif %} value="thicksteel">Thicksteel</option>
+			  <option {% if 'titanium' == prev_armour %} selected {% endif %} value="titanium">Titanium</option>
+		  </select>
+	    </div>
+	  </div>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">
