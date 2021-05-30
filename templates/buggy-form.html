@@ -82,7 +82,92 @@
       margin-top: 0;
     }
   }
+  
+  #check_hamster {
+     display: none;
+  }
+  #check_hamster_2 {
+     display: none;
+  }
+  .button_change{
+	  background-color: #fffff;
+	  border: 1px solid black;
+	  color: black;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+  }
+  .selected{
+	  background-color: red;
+	  border: none;
+	  color: white;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+  }
 </style>
+<script>
+		  window.onpageshow = function() {
+		      document.getElementById("check_hamster").style.display = document.getElementById("power_type").value == "hamster" ? 'block' : 'none';
+			  document.getElementById("check_hamster_2").style.display = document.getElementById("aux_power_type").value == "hamster" ? 'block' : 'none';
+	          if (document.getElementById("fireproof").value == "false"){
+	           document.getElementById("fireproof").style.backgroundColor = "red";
+	          } else {
+	           document.getElementById("fireproof").style.backgroundColor = "green";
+	          }
+	          if (document.getElementById("insulated").value == "false"){
+	           document.getElementById("insulated").style.backgroundColor = "red";
+	          } else {
+	          	document.getElementById("insulated").style.backgroundColor = "green";
+	          }
+	          if (document.getElementById("antibiotic").value == "false"){
+	          	document.getElementById("antibiotic").style.backgroundColor = "red";
+	          } else {
+	          	document.getElementById("antibiotic").style.backgroundColor = "green";
+	          }
+		  }
+	  function displayDivDemo(id, elementValue) {
+	     document.getElementById(id).style.display = elementValue.value == "hamster" ? 'block' : 'none';
+	  }
+	  function change_fireproof()
+	  {
+	      if (document.getElementById("fireproof").value=="false"){ 
+			  document.getElementById("fireproof").value = "true";
+			  document.getElementById("fireproof").style.backgroundColor = "green";
+		  }
+	      else {
+			  document.getElementById("fireproof").value = "false";
+			  document.getElementById("fireproof").style.backgroundColor = "red";
+		  }
+	  }
+	  function change_insulated()
+	  {
+	      if (document.getElementById("insulated").value=="false"){ 
+			  document.getElementById("insulated").value = "true";
+			  document.getElementById("insulated").style.backgroundColor = "green";
+		  }
+	      else {
+			  document.getElementById("insulated").value = "false";
+			  document.getElementById("insulated").style.backgroundColor = "red";
+		  }
+	  }
+	  function change_antibiotic()
+	  {
+	      if (document.getElementById("antibiotic").value=="false"){ 
+			  document.getElementById("antibiotic").value = "true";
+			  document.getElementById("antibiotic").style.backgroundColor = "green";
+		  }
+	      else {
+			  document.getElementById("antibiotic").value = "false";
+			  document.getElementById("antibiotic").style.backgroundColor = "red";
+		  }
+	  }
+</script>
+
   <h1>Make buggy</h1>
   <p style="color: red"> {{msg}} </p>
   <p style="color: red"> {{msg2}} </p>
@@ -200,22 +285,7 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the engine</p>
 	    </div>
 	  </div>
-	  
-	  <!-- CHECK IF SELECTED POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
-	  <script>
-		  window.onpageshow = function() {
-		      document.getElementById("check_hamster").style.display = document.getElementById("power_type").value == "hamster" ? 'block' : 'none';
-			  document.getElementById("check_hamster_2").style.display = document.getElementById("aux_power_type").value == "hamster" ? 'block' : 'none';
-		  };
-	     function displayDivDemo(id, elementValue) {
-	        document.getElementById(id).style.display = elementValue.value == "hamster" ? 'block' : 'none';
-	     }
-	  </script>
-	  <style>
-	     #check_hamster {
-	        display: none;
-	     }
-	  </style>
+	  	  
 	<div class="row" id="check_hamster">
 		<div class="col-25">
 			<label for="hamster_booster">Unit of fuel for Hamster Booster:</label>
@@ -225,11 +295,10 @@
 			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Hamster booster: </p>
 		</div>
 	</div>
-	<!-- ------------------------------------------------------------------ -->
 	  
 	  <div class="row">
 	    <div class="col-25">
-	      <label for="power_type">Type of Auxiliary Power:</label>  
+	      <label for="aux_power_type">Type of Auxiliary Power:</label>  
 	    </div>
 	    <div class="col-75">
 		  <select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" value="{{ prev_aux_power_type }}" onchange="displayDivDemo('check_hamster_2', this)">
@@ -256,12 +325,7 @@
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the auxiliary engine</p>
 	    </div>
 	  </div>
-    	  <!--CHECK IF SELECTED AUXILIARY POWER IS = HAMSTER FOR USING OR NOT THE BOOSTER-->
-    	  <style>
-    	     #check_hamster_2 {
-    	        display: none;
-    	     }
-    	  </style>
+    	  
     	<div class="row" id="check_hamster_2">
     		<div class="col-25">
     			<label for="hamster_booster">Unit of fuel for Auxiliary Hamster Booster:</label>
@@ -317,81 +381,37 @@
 	      <label for="fireproof">Fireproof?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="fireproof" class="select_fireproof" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change_fireproof()" required>
+  			<select id="fireproof" class="selected" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change_fireproof()" required>
   				<option {% if 'false' == prev_fireproof %} selected {% endif %} value="false">False</option>
   				<option {% if 'true' == prev_fireproof %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="fireproof" name="fireproof" value="Press to change" onclick="change_fireproof()"/> 
 	    </div>
 	  </div>
-	  <style>
-		  .button_change{
-			  background-color: #fffff;
-			  border: 1px solid black;
-			  color: black;
-			  padding: 15px 32px;
-			  text-align: center;
-			  text-decoration: none;
-			  display: inline-block;
-			  font-size: 16px;
-		  }
-		  .select_fireproof{
-			  background-color: red;
-			  border: none;
-			  color: white;
-			  padding: 15px 32px;
-			  text-align: center;
-			  text-decoration: none;
-			  display: inline-block;
-			  font-size: 16px;
-		  }
-	  </style>
-	  <script>
-		  window.onpageshow = function() {
-		      if (document.getElementById("fireproof").value == "false"){
-		      	document.getElementById("fireproof").style.backgroundColor = "red"
-		      } else {
-		      	document.getElementById("fireproof").style.backgroundColor = "green"
-		      }
-		      if (document.getElementById("insulated").value == "false"){
-		      	document.getElementById("insulated").style.backgroundColor = "red"
-		      } else {
-		      	document.getElementById("insulated").style.backgroundColor = "green"
-		      }
-		  }
-		  function change_fireproof()
-		  {
-		      if (document.getElementById("fireproof").value=="false"){ 
-				  document.getElementById("fireproof").value = "true";
-				  document.getElementById("fireproof").style.backgroundColor = "green";
-			  }
-		      else {
-				  document.getElementById("fireproof").value = "false";
-				  document.getElementById("fireproof").style.backgroundColor = "red";
-			  }
-		  }
-		  function change_insulated()
-		  {
-		      if (document.getElementById("insulated").value=="false"){ 
-				  document.getElementById("insulated").value = "true";
-				  document.getElementById("insulated").style.backgroundColor = "green";
-			  }
-		      else {
-				  document.getElementById("insulated").value = "false";
-				  document.getElementById("insulated").style.backgroundColor = "red";
-			  }
-		  }
-	  </script>
+	  
 	  <div class="row">
 	    <div class="col-25">
 	      <label for="insulated">Insulated?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="insulated" class="select_fireproof" name="insulated" style="height: 50px; font-size: 16px" value="{{ prev_insulated }}" onchange="change_insulated()" required>
+  			<select id="insulated" class="selected" name="insulated" style="height: 50px; font-size: 16px" value="{{ prev_insulated }}" onchange="change_insulated()" required>
   				<option {% if 'false' == prev_insulated %} selected {% endif %} value="false">False</option>
   				<option {% if 'true' == prev_insulated %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="insulated" name="insulated" value="Press to change" onclick="change_insulated()"/> 
+	    </div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="antibiotic">Antibiotic?</label>
+	    </div>
+	    <div class="col-75">
+  			<select id="antibiotic" class="selected" name="antibiotic" style="height: 50px; font-size: 16px" value="{{ prev_antibiotic }}" onchange="change_antibiotic()" required>
+  				<option {% if 'false' == prev_antibiotic %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == prev_antibiotic %} selected {% endif %} value="true">True</option>
+			</select>
+			<input type="button" class="home" id="antibiotic" name="antibiotic" value="Press to change" onclick="change_antibiotic()"/> 
 	    </div>
 	  </div>
 	  

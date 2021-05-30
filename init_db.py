@@ -42,7 +42,8 @@ connection.execute("""
     attack                VARCHAR(20) DEFAULT "none",
     qty_attacks           INTEGER DEFAULT 0,
     fireproof             VARCHAR(20) DEFAULT "false",
-    insulated             VARCHAR(20) DEFAULT "false"
+    insulated             VARCHAR(20) DEFAULT "false",
+    antibiotic            VARCHAR(20) DEFAULT "false"
   )
 
 """)
