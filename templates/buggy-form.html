@@ -384,7 +384,7 @@
 	  
 	  <div class="row">
 	    <div class="col-25">
-	      <label for="qty_attacks">Unit of fuel:</label>
+	      <label for="qty_attacks">Unit of attacks:</label>
 	    </div>
 	    <div class="col-75">
 	      <input type="number" id="qty_attacks" name="qty_attacks" value="{{ prev_qty_attacks }}" placeholder="Number of attacks... ">
@@ -443,6 +443,9 @@
 			<input type="button" class="home" id="banging" name="banging" value="Press to change" onclick="change_banging()"/> 
 	    </div>
 	  </div>
+	  
+	  <!-- 3-AUTOFILL -> ask for a cost limit when the button is pressed, and try to add items so that the buggy's total cost is within that limit. -->
+	  <div>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">
