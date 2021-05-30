@@ -287,6 +287,29 @@
 		  </select>
 	    </div>
 	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="attack">Type of Attack:</label>  
+	    </div>
+	    <div class="col-75">
+		  <select id="attack" name="attack" style="height: 50px; font-size: 16px" value="{{ prev_attack }}" required>
+			  <option {% if 'none' == prev_attack %} selected {% endif %} value="none">None</option>
+			  <option {% if 'spike' == prev_attack %} selected {% endif %} value="spike">Spike</option>
+			  <option {% if 'flame' == prev_attack %} selected {% endif %} value="flame">Flame</option>
+			  <option {% if 'charge' == prev_attack %} selected {% endif %} value="charge">Charge</option>
+			  <option {% if 'biohazard' == prev_attack %} selected {% endif %} value="biohazard">Biohazard</option>
+		  </select>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-25">
+	      <label for="qty_attacks">Unit of fuel:</label>
+	    </div>
+	    <div class="col-75">
+	      <input type="number" id="qty_attacks" name="qty_attacks" value="{{ prev_qty_attacks }}" placeholder="Number of attacks... ">
+		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of attacks you want to do</p>
+	    </div>
+	  </div>
 	  
 	  <div class="row">
 	    <input type="submit" class="button">

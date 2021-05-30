@@ -118,14 +118,24 @@ def create_buggy():
                 prev_armour = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
             except:
                 prev_armour = "none"
+            try:
+                cur.execute("SELECT attack FROM buggies")
+                prev_attack = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_attack = "none"
+            try:
+                cur.execute("SELECT qty_attacks FROM buggies")
+                prev_qty_attacks = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+            except:
+                prev_qty_attacks = "none"
             
-            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour]
+            prev_form_store = [prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour, prev_attack, prev_qty_attacks]
             for i in range(0, len(prev_form_store)):
                 if prev_form_store[i] != "''":
                     prev_form_store[i] = str(prev_form_store[i]).replace("'","")
                 else:
                     prev_form_store[i] = "None"
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13])
+        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13], prev_attack=prev_form_store[14], prev_qty_attacks=prev_form_store[15])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -142,10 +152,12 @@ def create_buggy():
         tyres = request.form['tyres']
         qty_tyres = request.form['qty_tyres']
         armour = request.form['armour']
+        attack = request.form['attack']
+        qty_attacks = request.form['qty_attacks']
         total_cost = 0
         
         
-        form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, armour]#, aux_power_type, aux_power_units]
+        form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, armour, attack]#, aux_power_type, aux_power_units]
        
         #----ERRORS------------------------------------------------------------------------------------
         for i in range(0, len(form_store)):
@@ -179,6 +191,10 @@ def create_buggy():
             total_cost += armours[armour]
         elif int(qty_tyres) > 4:
             total_cost += ((((int(qty_tyres)-4)*10)/100)*armours[armour])+armours[armour]
+        
+        #ATTACK
+        attacks = {"none": 0, "spike": 5, "flame": 20, "charge": 28, "biohazard": 30}
+        total_cost += attacks[attack]*int(qty_attacks)
         
         #HAMSTER BOOSTERS
         if power_type == "hamster":
