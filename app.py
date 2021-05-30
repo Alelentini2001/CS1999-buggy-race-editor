@@ -180,7 +180,6 @@ def create_buggy():
         banging = request.form['banging']
         total_cost = 0
         
-        
         form_store = [qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, armour, attack]#, aux_power_type, aux_power_units]
        
         #----ERRORS------------------------------------------------------------------------------------
@@ -191,6 +190,8 @@ def create_buggy():
             msg += f"Oh noes, that is not a number: {qty_wheels}; "
         if int(qty_wheels) in range(0,4):
             msg += "Oh noes, the number of wheels can't be less than 4!; "
+        if (int(qty_wheels) % 2) != 0:
+            msg += "Oh noes, the number of wheels should be an even number!; "
         if int(qty_tyres) < int(qty_wheels):
             msg += "Oh noes, the number of tyres can't be less than the number of wheels!; "
         if power_type in ["fusion", "thermo", "solar", "wind"] and int(power_units) > 1:
@@ -199,7 +200,7 @@ def create_buggy():
             msg2 += "You can use only one unit for this power types --> Change the number to 1 to use it; "
         
         if msg != "" or msg2 != "":
-            return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, prev_power_units=power_units, prev_aux_power_type=aux_power_type, prev_aux_power_units=aux_power_units, prev_hamster_booster=hamster_booster, prev_aux_hamster_booster=aux_hamster_booster, msg=msg, msg2=msg2)
+            return render_template("buggy-form.html", prev_qty_wheels=qty_wheels, prev_flag_color=flag_color, prev_flag_color_secondary=flag_color_secondary, prev_flag_pattern=flag_pattern, prev_power_type=power_type, prev_power_units=power_units, prev_aux_power_type=aux_power_type, prev_aux_power_units=aux_power_units, prev_hamster_booster=hamster_booster, prev_aux_hamster_booster=aux_hamster_booster, prev_tyres=tyres, prev_qty_tyres=qty_tyres, prev_armour=armour, prev_attack=attack, prev_qty_attacks=qty_attacks, prev_fireproof=fireproof, prev_insulated=insulated, prev_antibiotic=antibiotic, prev_banging=banging, msg=msg, msg2=msg2)
         #----------------------------------------------------------------------------------------------        
         power_type_consumables = {"petrol": 4, "steam":3, "bio":5, "electric":20, "rocket": 16}#, "hamster": 3}
         power_type_non_consumables = {"fusion": 400, "thermo": 300, "solar": 40, "wind": 20}
