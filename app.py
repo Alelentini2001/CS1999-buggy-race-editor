@@ -76,7 +76,7 @@ def create_buggy():
                 cur.execute("SELECT flag_pattern FROM buggies")
                 prev_flag_pattern = str(cur.fetchone()).replace(",","").replace("(","").replace(")","");
             except:
-                prev_flag_pattern = "None"
+                prev_flag_pattern = "plain"
                 
             try:
                 cur.execute("SELECT power_type FROM buggies")
