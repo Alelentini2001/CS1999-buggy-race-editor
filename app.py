@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Constants - Stuff that we need to know that won't ever change!
 DATABASE_FILE = "database.db"
-#DEFAULT_BUGGY_ID = "1"
+DEFAULT_BUGGY_ID = "1"
 BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 
 #------------------------------------------------------------
@@ -21,7 +21,6 @@ def home():
 #------------------------------------------------------------
 # app name
 @app.errorhandler(404)
-  
 # inbuilt function which takes error as parameter
 def not_found(e):
   return render_template("404.html")
@@ -429,6 +428,7 @@ def show_buggies():
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
     records = cur.fetchall(); 
+    con.close()
     return render_template("buggy.html", buggies=records)
 
 #------------------------------------------------------------
@@ -443,7 +443,21 @@ def edit_buggy(buggy_id):
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies WHERE id=?", (buggy_id,))
     record = cur.fetchone();
+    con.close()
     return render_template("buggy-form.html", buggy=record)
+
+#------------------------------------------------------------
+# delete the selected buggy
+#------------------------------------------------------------
+@app.route('/delete/<buggy_id>')
+def delete_buggy(buggy_id):
+    print(f"I want to delete buggy #{buggy_id}")
+    con = sql.connect(DATABASE_FILE)
+    cur = con.cursor()
+    cur.execute("DELETE FROM buggies WHERE id=?", (buggy_id,))
+    msg = "buggy deleted coorectly!"
+    con.commit()
+    return render_template("updated.html", msg=msg)
 
 #------------------------------------------------------------
 # a page for the project poster!
