@@ -496,14 +496,59 @@ def poster():
 #  the data, so in effect jsonify() is rendering the data.
 #------------------------------------------------------------
 @app.route('/json')
+def summary_first():
+    try:
+        con = sql.connect(DATABASE_FILE)
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
+        buggies = dict(zip([column[0] for column in cur.description], cur.fetchone())).items() 
+        return jsonify({ key: val for key, val in buggies if (val != "" and val is not None) })
+    except:
+        msg = "No buggies stored in the database"
+        return render_template("updated.html", msg=msg)
+        
+@app.route('/json_all')
 def summary():
-    con = sql.connect(DATABASE_FILE)
-    con.row_factory = sql.Row
-    cur = con.cursor()
-    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
+    try:
+        con = sql.connect(DATABASE_FILE)
+        SQL = "select * from buggies;"
+        cur = con.cursor()
+        cur.execute(SQL)
+        result_list = cur.fetchall()      #return sql result
+        print("fetch result-->",type(result_list))  #is s list type, need to be a dict
 
-    buggies = dict(zip([column[0] for column in cur.description], cur.fetchone())).items() 
-    return jsonify({ key: val for key, val in buggies if (val != "" and val is not None) })
+        fields_list = cur.description   # sql key name
+        print("fields result -->",type(fields_list))
+        #print("header--->",fields)
+        cur.close()
+        con.close()
+
+
+
+        # main part
+        column_list = []
+        for i in fields_list:
+            column_list.append(i[0])
+        print("print final colume_list",column_list)
+
+            # print("colume list  -->", column_list)
+
+        jsonData_list = []
+        for row in result_list:
+            data_dict = {}
+            for i in range(len(column_list)):
+                data_dict[column_list[i]] = row[i]
+            jsonData_list.append(data_dict)
+        if len(jsonData_list) != 0:
+            return jsonify({'buggies': jsonData_list})
+        else:
+            msg = "No buggies stored in the database"
+            return render_template("updated.html", msg=msg)
+    except:
+        msg = "An error appeared -_-"
+        return render_template("updated.html", msg=msg)
+    
 
 # You shouldn't need to add anything below this!
 if __name__ == '__main__':
