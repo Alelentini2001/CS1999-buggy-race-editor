@@ -194,23 +194,35 @@
 	  }
 	  var form = document.getElementById("buggy-form");
 
-	  document.getElementById("your-id").addEventListener("click", function () {
+	  document.getElementById("limit_cost_button").addEventListener("click", function () {
 	    form.submit();
 	  });
 </script>
 
+{% if buggy['id'] is defined %}
+  <h1>Edit buggy #{{ buggy['id'] }}</h1>
+{% else %}
   <h1>Make buggy</h1>
+{% endif %}
   <p style="color: red"> {{msg}} </p>
   <p style="color: red"> {{msg2}} </p>
 <div class="container">
   <form action="/new" method="post" id="buggy-form">
 	
+{% if buggy['id'] is defined %}
+	<div class="row" style="visibility: hidden">
+{% else %}
 	<div class="row">
+{% endif%}
 	    <div class="col-25">
 	      <label for="id">Buggy ID:</label>
 	    </div>
 	    <div class="col-75">
-			<input type="number" id="id" name="id" value="{{ prev_id }}" placeholder="ID...">
+			{% if buggy['id'] is defined %}
+				<input type="number" id="id" name="id" value="{{ buggy['id'] }}" placeholder="ID..." >
+			{% else %}
+				<input type="number" id="id" name="id" value="1" placeholder="ID..." >
+			{% endif %}
 			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the Buggy ID (default value 1)</p>
 	    </div>
 	  </div>
@@ -220,7 +232,11 @@
 	      <label for="qty_wheels">Number of wheels:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="qty_wheels" name="qty_wheels" value="{{ prev_qty_wheels }}" placeholder="Quantity of wheels... ">
+			{% if buggy['qty_wheels'] is defined %}
+	      		<input type="number" id="qty_wheels" name="qty_wheels" value="{{ buggy['qty_wheels'] }}" placeholder="Quantity of wheels... ">
+			{% else %}
+				<input type="number" id="qty_wheels" name="qty_wheels" value="4" placeholder="Quantity of wheels... ">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
 	    </div>
 	  </div>
@@ -230,13 +246,17 @@
 	      <label for="tyres">Type of Tyres:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="tyres" name="tyres" style="height: 50px; font-size: 16px" value="{{ prev_tyres }}" required>
+			{% if buggy['tyres'] is defined %}
+		  		<select id="tyres" name="tyres" style="height: 50px; font-size: 16px" value="{{ buggy['tyres'] }}" required>
+			{% else %}
+				<select id="tyres" name="tyres" style="height: 50px; font-size: 16px" required>
+			{% endif %}
 			  <option></option>
-			  <option {% if 'knobbly' == prev_tyres %} selected {% endif %} value="knobbly">Knobbly</option>
-			  <option {% if 'slick' == prev_tyres %} selected {% endif %} value="slick">Slick</option>
-			  <option {% if 'steelband' == prev_tyres %} selected {% endif %} value="steelband">Steelband</option>
-			  <option {% if 'reactive' == prev_tyres %} selected {% endif %} value="reactive">Reactive</option>
-			  <option {% if 'maglev' == prev_tyres %} selected {% endif %} value="maglev">Maglev</option>
+			  <option {% if 'knobbly' == buggy['tyres'] %} selected {%elif buggy['tyres'] not in ['slick','steelband','reactive','maglev'] %} selected {% endif %} value="knobbly">Knobbly</option>
+			  <option {% if 'slick' == buggy['tyres'] %} selected {% endif %} value="slick">Slick</option>
+			  <option {% if 'steelband' == buggy['tyres'] %} selected {% endif %} value="steelband">Steelband</option>
+			  <option {% if 'reactive' == buggy['tyres'] %} selected {% endif %} value="reactive">Reactive</option>
+			  <option {% if 'maglev' == buggy['tyres'] %} selected {% endif %} value="maglev">Maglev</option>
 		  </select>
 	    </div>
 	  </div>
@@ -245,7 +265,11 @@
 	      <label for="qty_tyres">Number of Tyres:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="qty_tyres" name="qty_tyres" value="{{ prev_qty_tyres }}" placeholder="Quantity of tyres... ">
+			{% if buggy['qty_tyres'] is defined %}
+	      		<input type="number" id="qty_tyres" name="qty_tyres" value="{{ buggy['qty_tyres'] }}" placeholder="Quantity of tyres... ">
+		  	{% else %}
+				<input type="number" id="qty_tyres" name="qty_tyres" value="4" placeholder="Quantity of tyres... ">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of the wheels (Minimum 4!)</p>
 	    </div>
 	  </div>
@@ -255,7 +279,11 @@
 	      <label for="flag_color">Colour of flag:</label>
 	    </div>
 	    <div class="col-75">
-		  <input type="color" id="flag_color" name="flag_color" value="{{ prev_flag_color }}" style="border: 1px solid black; background-color: {{ prev_flag_color }}" oninput="this.style.setProperty('background-color', this.value)">
+			{% if buggy['flag_color'] is defined %}
+			  <input type="color" id="flag_color" name="flag_color" value="{{ buggy['flag_color'] }}" style="border: 1px solid black; background-color: {{ buggy['flag_color'] }}" oninput="this.style.setProperty('background-color', this.value)">
+			{% else %}
+				<input type="color" id="flag_color" name="flag_color" style="border: 1px solid black; background-color: #ffffff" oninput="this.style.setProperty('background-color', this.value)">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Select the CSS-colour from this square (saved as example: #ff0000 or red)</p>
 	    </div>
 	  </div>
@@ -265,7 +293,11 @@
 	      <label for="flag_color_secondary">Secondary flag colour:</label> 
 	    </div>
 	    <div class="col-75">
-			<input type="color" id="flag_color_secondary" name="flag_color_secondary" value="{{ prev_flag_color_secondary }}" style="border: 1px solid black; background-color: {{ prev_flag_color_secondary }}" oninput="this.style.setProperty('background-color', this.value)">
+			{% if buggy['flag_color_secondary'] is defined%}
+				<input type="color" id="flag_color_secondary" name="flag_color_secondary" value="{{ buggy['flag_color_secondary'] }}" style="border: 1px solid black; background-color: {{ buggy['flag_color_secondary'] }}" oninput="this.style.setProperty('background-color', this.value)">
+			{% else %}
+				<input type="color" id="flag_color_secondary" name="flag_color_secondary" style="border: 1px solid black; background-color: #ffffff" oninput="this.style.setProperty('background-color', this.value)">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Select the CSS-colour from this square (saved as example: #ff0000 or red)</p>
 	    </div>
 	  </div>
@@ -275,14 +307,18 @@
 	      <label for="flag_pattern">Pattern of flag:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="flag_pattern" name="flag_pattern" style="height: 50px; font-size: 16px" value="{{ prev_flag_pattern }}" required>
+			{% if buggy['flag_pattern'] is defined %}
+			  <select id="flag_pattern" name="flag_pattern" style="height: 50px; font-size: 16px" value="{{ buggy['flag_pattern'] }}" required>
+			{% else %}
+				<select id="flag_pattern" name="flag_pattern" style="height: 50px; font-size: 16px" required>
+			{% endif %}
 			  <option></option>
-			  <option {% if 'plain' == prev_flag_pattern %} selected {% endif %} value="plain">Plain pattern</option>
-			  <option {% if 'vstripe' == prev_flag_pattern %} selected {% endif %} value="vstripe">Vertical stripe</option>
-			  <option {% if 'hstripe' == prev_flag_pattern %} selected {% endif %} value="hstripe">Horizontal stripe</option>
-			  <option {% if 'dstripe' == prev_flag_pattern %} selected {% endif %} value="dstripe">Diagonal stripe</option>
-			  <option {% if 'checker' == prev_flag_pattern %} selected {% endif %} value="checker">Checker</option>
-			  <option {% if 'spot' == prev_flag_pattern %} selected {% endif %} value="spot">Spot</option>
+			  <option {% if 'plain' == buggy['flag_pattern'] %} selected {%elif buggy['flag_pattern'] not in ['vstripe','hstripe','dstripe','checker', 'spot'] %} selected {% endif %} value="plain">Plain pattern</option>
+			  <option {% if 'vstripe' == buggy['flag_pattern'] %} selected {% endif %} value="vstripe">Vertical stripe</option>
+			  <option {% if 'hstripe' == buggy['flag_pattern'] %} selected {% endif %} value="hstripe">Horizontal stripe</option>
+			  <option {% if 'dstripe' == buggy['flag_pattern'] %} selected {% endif %} value="dstripe">Diagonal stripe</option>
+			  <option {% if 'checker' == buggy['flag_pattern'] %} selected {% endif %} value="checker">Checker</option>
+			  <option {% if 'spot' == buggy['flag_pattern'] %} selected {% endif %} value="spot">Spot</option>
 		  </select>
 	    </div>
 	  </div>
@@ -292,18 +328,22 @@
 	      <label for="power_type">Type of Power:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ prev_power_type }}" onchange="displayDivDemo('check_hamster', this)" required>
+			{% if buggy['flag_pattern'] is defined %}
+		  		<select id="power_type" name="power_type" style="height: 50px; font-size: 16px" value="{{ buggy['power_type'] }}" onchange="displayDivDemo('check_hamster', this)" required>
+			{% else %}
+				<select id="power_type" name="power_type" style="height: 50px; font-size: 16px"  onchange="displayDivDemo('check_hamster', this)" required>
+			{% endif %}
 			  <option></option>
-			  <option {% if 'petrol' == prev_power_type %} selected {% endif %} value="petrol">Petrol</option>
-			  <option {% if 'fusion' == prev_power_type %} selected {% endif %} value="fusion">Fusion</option>
-			  <option {% if 'steam' == prev_power_type %} selected {% endif %} value="steam">Steam</option>
-			  <option {% if 'bio' == prev_power_type %} selected {% endif %} value="bio">Bio</option>
-			  <option {% if 'electric' == prev_power_type %} selected {% endif %} value="electric">Electric</option>
-			  <option {% if 'rocket' == prev_power_type %} selected {% endif %} value="rocket">Rocket</option>
-			  <option {% if 'hamster' == prev_power_type %} selected {% endif %} value="hamster">Hamster</option>
-			  <option {% if 'thermo' == prev_power_type %} selected {% endif %} value="thermo">Thermo</option>
-			  <option {% if 'solar' == prev_power_type %} selected {% endif %} value="solar">Solar</option>
-			  <option {% if 'wind' == prev_power_type %} selected {% endif %} value="wind">Wind</option>
+			  <option {% if 'petrol' == buggy['power_type'] %} selected {%elif buggy['power_type'] not in ['fusion','steam','bio','electric','rocket','hamster','thermo','solar','wind'] %} selected {% endif %} value="petrol">Petrol</option>
+			  <option {% if 'fusion' == buggy['power_type'] %} selected {% endif %} value="fusion">Fusion</option>
+			  <option {% if 'steam' == buggy['power_type'] %} selected {% endif %} value="steam">Steam</option>
+			  <option {% if 'bio' == buggy['power_type'] %} selected {% endif %} value="bio">Bio</option>
+			  <option {% if 'electric' == buggy['power_type'] %} selected {% endif %} value="electric">Electric</option>
+			  <option {% if 'rocket' == buggy['power_type'] %} selected {% endif %} value="rocket">Rocket</option>
+			  <option {% if 'hamster' == buggy['power_type'] %} selected {% endif %} value="hamster">Hamster</option>
+			  <option {% if 'thermo' == buggy['power_type'] %} selected {% endif %} value="thermo">Thermo</option>
+			  <option {% if 'solar' == buggy['power_type'] %} selected {% endif %} value="solar">Solar</option>
+			  <option {% if 'wind' == buggy['power_type'] %} selected {% endif %} value="wind">Wind</option>
 		  </select>
 	    </div>
 	  </div>
@@ -312,7 +352,11 @@
 	      <label for="power_units">Unit of fuel:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="power_units" name="power_units" value="{{ prev_power_units }}" placeholder="Unit of fuel for the engine... ">
+			{% if buggy['power_units'] is defined %}
+	      		<input type="number" id="power_units" name="power_units" value="{{ buggy['power_units'] }}" placeholder="Unit of fuel for the engine... ">
+			{% else %}
+				<input type="number" id="power_units" name="power_units" value="1" placeholder="Unit of fuel for the engine... ">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the engine</p>
 	    </div>
 	  </div>
@@ -322,7 +366,11 @@
 			<label for="hamster_booster">Unit of fuel for Hamster Booster:</label>
 		</div>
 		<div class="col-75">
-			<input type="number" id="hamster_booster" name="hamster_booster" value="{{ prev_hamster_booster }}" placeholder="Unit of fuel for the hamster booster... ">
+			{% if buggy['hamster_booster'] is defined %}
+				<input type="number" id="hamster_booster" name="hamster_booster" value="{{ buggy['hamster_booster'] }}" placeholder="Unit of fuel for the hamster booster... ">
+			{% else %}
+				<input type="number" id="hamster_booster" name="hamster_booster" value="0" placeholder="Unit of fuel for the hamster booster... ">
+			{% endif %}
 			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Hamster booster: </p>
 		</div>
 	</div>
@@ -332,18 +380,22 @@
 	      <label for="aux_power_type">Type of Auxiliary Power:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" value="{{ prev_aux_power_type }}" onchange="displayDivDemo('check_hamster_2', this)">
-			  <option value="none"></option>
-			  <option {% if 'petrol' == prev_aux_power_type %} selected {% endif %} value="petrol">Petrol</option>
-			  <option {% if 'fusion' == prev_aux_power_type %} selected {% endif %} value="fusion">Fusion</option>
-			  <option {% if 'steam' == prev_aux_power_type %} selected {% endif %} value="steam">Steam</option>
-			  <option {% if 'bio' == prev_aux_power_type %} selected {% endif %} value="bio">Bio</option>
-			  <option {% if 'electric' == prev_aux_power_type %} selected {% endif %} value="electric">Electric</option>
-			  <option {% if 'rocket' == prev_aux_power_type %} selected {% endif %} value="rocket">Rocket</option>
-			  <option {% if 'hamster' == prev_aux_power_type %} selected {% endif %} value="hamster">Hamster</option>
-			  <option {% if 'thermo' == prev_aux_power_type %} selected {% endif %} value="thermo">Thermo</option>
-			  <option {% if 'solar' == prev_aux_power_type %} selected {% endif %} value="solar">Solar</option>
-			  <option {% if 'wind' == prev_aux_power_type %} selected {% endif %} value="wind">Wind</option>
+			{% if buggy['aux_power_type'] is defined %}
+			  <select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" value="{{ buggy['aux_power_type'] }}" onchange="displayDivDemo('check_hamster_2', this)">
+			{% else %}
+				<select id="aux_power_type" name="aux_power_type" style="height: 50px; font-size: 16px" onchange="displayDivDemo('check_hamster_2', this)">
+			{% endif %}
+			  <option value="none" {% if buggy['aux_power_type'] not in ['petrol','fusion','steam','bio','electric','rocket','hamster','thermo','solar','wind'] %} selected {% endif %}></option>
+			  <option {% if 'petrol' == buggy['aux_power_type'] %} selected {% endif %} value="petrol">Petrol</option>
+			  <option {% if 'fusion' == buggy['aux_power_type'] %} selected {% endif %} value="fusion">Fusion</option>
+			  <option {% if 'steam' == buggy['aux_power_type'] %} selected {% endif %} value="steam">Steam</option>
+			  <option {% if 'bio' == buggy['aux_power_type'] %} selected {% endif %} value="bio">Bio</option>
+			  <option {% if 'electric' == buggy['aux_power_type'] %} selected {% endif %} value="electric">Electric</option>
+			  <option {% if 'rocket' == buggy['aux_power_type'] %} selected {% endif %} value="rocket">Rocket</option>
+			  <option {% if 'hamster' == buggy['aux_power_type'] %} selected {% endif %} value="hamster">Hamster</option>
+			  <option {% if 'thermo' == buggy['aux_power_type'] %} selected {% endif %} value="thermo">Thermo</option>
+			  <option {% if 'solar' == buggy['aux_power_type'] %} selected {% endif %} value="solar">Solar</option>
+			  <option {% if 'wind' == buggy['aux_power_type'] %} selected {% endif %} value="wind">Wind</option>
 		  </select>
 	    </div>
 	  </div>
@@ -352,7 +404,7 @@
 	      <label for="aux_power_units">Unit of fuel:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="aux_power_units" name="aux_power_units" value="{{ prev_aux_power_units }}" placeholder="Unit of fuel for the engine... ">
+	      <input type="number" id="aux_power_units" name="aux_power_units" value="{{ buggy['aux_power_units'] }}" placeholder="Unit of fuel for the engine... ">
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the unit of fuel for the auxiliary engine</p>
 	    </div>
 	  </div>
@@ -362,7 +414,11 @@
     			<label for="hamster_booster">Unit of fuel for Auxiliary Hamster Booster:</label>
     		</div>
     		<div class="col-75">
-    			<input type="number" id="aux_hamster_booster" name="aux_hamster_booster" value="{{ prev_aux_hamster_booster }}" placeholder="Unit of fuel for the auxiliary hamster booster... ">
+				{% if buggy['aux_hamster_booster'] is defined %}
+					<input type="number" id="aux_hamster_booster" name="aux_hamster_booster" value="{{ buggy['aux_hamster_booster'] }}" placeholder="Unit of fuel for the auxiliary hamster booster... ">
+				{% else %}
+					<input type="number" id="aux_hamster_booster" name="aux_hamster_booster" value="0" placeholder="Unit of fuel for the auxiliary hamster booster... ">
+				{% endif %}
     			<p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Auxiliary Hamster booster: </p>
     		</div>
     	</div>
@@ -372,13 +428,17 @@
 	      <label for="armour">Type of Armour:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="armour" name="armour" style="height: 50px; font-size: 16px" value="{{ prev_armour }}" required>
-			  <option {% if 'none' == prev_armour %} selected {% endif %} value="none">None</option>
-			  <option {% if 'wood' == prev_armour %} selected {% endif %} value="wood">Wood</option>
-			  <option {% if 'aluminium' == prev_armour %} selected {% endif %} value="aluminium">Aluminium</option>
-			  <option {% if 'thinsteel' == prev_armour %} selected {% endif %} value="thinsteel">Thinsteel</option>
-			  <option {% if 'thicksteel' == prev_armour %} selected {% endif %} value="thicksteel">Thicksteel</option>
-			  <option {% if 'titanium' == prev_armour %} selected {% endif %} value="titanium">Titanium</option>
+			{% if buggy['aux_hamster_booster'] is defined %}
+		  		<select id="armour" name="armour" style="height: 50px; font-size: 16px" value="{{ buggy['armour'] }}" required>
+			{% else %}
+				<select id="armour" name="armour" style="height: 50px; font-size: 16px"  required>
+			{% endif %}
+			  <option {% if 'none' == buggy['armour'] %} selected {% elif buggy['armour'] not in ['wood','aluminium','thinsteel','thicksteel','titanium'] %} selected {% endif %} value="none">None</option>
+			  <option {% if 'wood' == buggy['armour'] %} selected {% endif %} value="wood">Wood</option>
+			  <option {% if 'aluminium' == buggy['armour'] %} selected {% endif %} value="aluminium">Aluminium</option>
+			  <option {% if 'thinsteel' == buggy['armour'] %} selected {% endif %} value="thinsteel">Thinsteel</option>
+			  <option {% if 'thicksteel' == buggy['armour'] %} selected {% endif %} value="thicksteel">Thicksteel</option>
+			  <option {% if 'titanium' == buggy['armour'] %} selected {% endif %} value="titanium">Titanium</option>
 		  </select>
 	    </div>
 	  </div>
@@ -387,12 +447,16 @@
 	      <label for="attack">Type of Attack:</label>  
 	    </div>
 	    <div class="col-75">
-		  <select id="attack" name="attack" style="height: 50px; font-size: 16px" value="{{ prev_attack }}" required>
-			  <option {% if 'none' == prev_attack %} selected {% endif %} value="none">None</option>
-			  <option {% if 'spike' == prev_attack %} selected {% endif %} value="spike">Spike</option>
-			  <option {% if 'flame' == prev_attack %} selected {% endif %} value="flame">Flame</option>
-			  <option {% if 'charge' == prev_attack %} selected {% endif %} value="charge">Charge</option>
-			  <option {% if 'biohazard' == prev_attack %} selected {% endif %} value="biohazard">Biohazard</option>
+			{% if buggy['attack'] is defined%}
+		  		<select id="attack" name="attack" style="height: 50px; font-size: 16px" value="{{ buggy['attack'] }}" required>
+			{% else %}
+				<select id="attack" name="attack" style="height: 50px; font-size: 16px"  required>
+			{% endif %}
+			  <option {% if 'none' == buggy['attack'] %} selected {% elif buggy['attack'] not in ['spike','flame','charge','biohazard'] %} selected {% endif %} value="none">None</option>
+			  <option {% if 'spike' == buggy['attack'] %} selected {% endif %} value="spike">Spike</option>
+			  <option {% if 'flame' == buggy['attack'] %} selected {% endif %} value="flame">Flame</option>
+			  <option {% if 'charge' == buggy['attack'] %} selected {% endif %} value="charge">Charge</option>
+			  <option {% if 'biohazard' == buggy['attack'] %} selected {% endif %} value="biohazard">Biohazard</option>
 		  </select>
 	    </div>
 	  </div>
@@ -402,7 +466,11 @@
 	      <label for="qty_attacks">Unit of attacks:</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="qty_attacks" name="qty_attacks" value="{{ prev_qty_attacks }}" placeholder="Number of attacks... ">
+			{% if buggy['qty_attacks'] is defined %}
+	      		<input type="number" id="qty_attacks" name="qty_attacks" value="{{ buggy['qty_attacks'] }}" placeholder="Number of attacks... ">
+			{% else %}
+				<input type="number" id="qty_attacks" name="qty_attacks" value="0" placeholder="Number of attacks... ">
+			{% endif %}
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the number of attacks you want to do</p>
 	    </div>
 	  </div>
@@ -412,9 +480,13 @@
 	      <label for="fireproof">Fireproof?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="fireproof" class="selected" name="fireproof" style="height: 50px; font-size: 16px" value="{{ prev_fireproof }}" onchange="change_fireproof()" required>
-  				<option {% if 'false' == prev_fireproof %} selected {% endif %} value="false">False</option>
-  				<option {% if 'true' == prev_fireproof %} selected {% endif %} value="true">True</option>
+			{% if buggy['fireproof'] is defined %}
+  				<select id="fireproof" class="selected" name="fireproof" style="height: 50px; font-size: 16px" value="{{ buggy['fireproof'] }}" onchange="change_fireproof()" required>
+			{% else %}
+				<select id="fireproof" class="selected" name="fireproof" style="height: 50px; font-size: 16px" onchange="change_fireproof()" required>
+			{% endif %}
+  				<option {% if 'false' == buggy['fireproof'] %} selected {% elif buggy['fireproof'] not in ['true'] %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == buggy['fireproof'] %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="fireproof" name="fireproof" value="Press to change" onclick="change_fireproof()"/> 
 	    </div>
@@ -425,9 +497,13 @@
 	      <label for="insulated">Insulated?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="insulated" class="selected" name="insulated" style="height: 50px; font-size: 16px" value="{{ prev_insulated }}" onchange="change_insulated()" required>
-  				<option {% if 'false' == prev_insulated %} selected {% endif %} value="false">False</option>
-  				<option {% if 'true' == prev_insulated %} selected {% endif %} value="true">True</option>
+			{% if buggy['insulated'] is defined %}
+  				<select id="insulated" class="selected" name="insulated" style="height: 50px; font-size: 16px" value="{{ buggy['insulated'] }}" onchange="change_insulated()" required>
+			{% else %}
+				<select id="insulated" class="selected" name="insulated" style="height: 50px; font-size: 16px" onchange="change_insulated()" required>
+			{% endif %}
+  				<option {% if 'false' == buggy['insulated'] %} selected {% elif buggy['insulated'] not in ['true'] %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == buggy['insulated'] %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="insulated" name="insulated" value="Press to change" onclick="change_insulated()"/> 
 	    </div>
@@ -438,9 +514,13 @@
 	      <label for="antibiotic">Antibiotic?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="antibiotic" class="selected" name="antibiotic" style="height: 50px; font-size: 16px" value="{{ prev_antibiotic }}" onchange="change_antibiotic()" required>
-  				<option {% if 'false' == prev_antibiotic %} selected {% endif %} value="false">False</option>
-  				<option {% if 'true' == prev_antibiotic %} selected {% endif %} value="true">True</option>
+			{% if buggy['antibiotic'] is defined %}
+				<select id="antibiotic" class="selected" name="antibiotic" style="height: 50px; font-size: 16px" value="{{ buggy['antibiotic'] }}" onchange="change_antibiotic()" required>
+			{% else %}
+				<select id="antibiotic" class="selected" name="antibiotic" style="height: 50px; font-size: 16px" onchange="change_antibiotic()" required>
+			{% endif %}
+  				<option {% if 'false' == buggy['antibiotic'] %} selected {% elif buggy['antibiotic'] not in ['true'] %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == buggy['antibiotic'] %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="antibiotic" name="antibiotic" value="Press to change" onclick="change_antibiotic()"/> 
 	    </div>
@@ -451,9 +531,13 @@
 	      <label for="banging">Banging Sound System?</label>
 	    </div>
 	    <div class="col-75">
-  			<select id="banging" class="selected" name="banging" style="height: 50px; font-size: 16px" value="{{ prev_banging }}" onchange="change_banging()" required>
-  				<option {% if 'false' == prev_banging %} selected {% endif %} value="false">False</option>
-  				<option {% if 'true' == prev_banging %} selected {% endif %} value="true">True</option>
+			{% if buggy['insulated'] is defined %}
+  				<select id="banging" class="selected" name="banging" style="height: 50px; font-size: 16px" value="{{ buggy['banging'] }}" onchange="change_banging()" required>
+			{% else %}
+				<select id="banging" class="selected" name="banging" style="height: 50px; font-size: 16px" onchange="change_banging()" required>
+			{% endif %}
+  				<option {% if 'false' == buggy['banging'] %} selected {% elif buggy['banging'] not in ['true'] %} selected {% endif %} value="false">False</option>
+  				<option {% if 'true' == buggy['banging'] %} selected {% endif %} value="true">True</option>
 			</select>
 			<input type="button" class="home" id="banging" name="banging" value="Press to change" onclick="change_banging()"/> 
 	    </div>
@@ -466,7 +550,7 @@
 	      <label for="cost_limit">Cost Limit (random buggy):</label>
 	    </div>
 	    <div class="col-75">
-	      <input type="number" id="cost_limit" name="cost_limit" value="{{ prev_cost_limit }}" placeholder="Insert the cost limit for the random buggy... ">
+	      <input type="number" id="cost_limit" name="cost_limit" value="{{ buggy['cost_limit'] }}" placeholder="Insert the cost limit for the random buggy... ">
 		  <p style="text-align:left; margin-top: 0px; margin-bottom: 10px; opacity: 100%; color: grey; font-size: 13px">Insert the cost limit for the random buggy (only consumable power used and 1 engine).</p>
 	    </div>
 		<a href="/buggy">

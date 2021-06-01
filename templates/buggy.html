@@ -16,83 +16,85 @@
      }
   </style>
   
-  <script>
-  	 	window.onpageshow = function() {
-  	     	document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
-  		 	document.getElementById("check_hamster2_tr").style.display = {{ buggy['aux_hamster_booster'] }} != 0 ? 'show' : 'hide';
-  	  }
-  </script>
 
   <h1>Buggy</h1>
 
-  <table>
-    <tr>
-      <td>ID:</td> <td> {{ buggy['id'] }} </td>
-    </tr>
-    <tr>
-      <td>Wheels:</td> <td> {{ buggy['qty_wheels'] }} </td>
-    </tr>
-	<tr>
-		<td>Tyres:</td> <td> {{ buggy['tyres'] }} </td>
-	</tr>
-	<tr>
-		<td>Quantity of Tyres:</td> <td> {{ buggy['qty_tyres'] }} </td>
-	</tr>
-	<tr>
-		<td>Flag Color:</td> <td> {{ buggy['flag_color'] }} </td>
-	</tr>
-    <tr>
-      <td>Flag Color Secondary:</td> <td> {{ buggy['flag_color_secondary'] }} </td>
-    </tr>
-	<tr>
-		<td>Flag Pattern:</td> <td> {{ buggy['flag_pattern'] }} </td>
-	</tr>
-	<tr>
-		<td>Type of Power:</td> <td> {{ buggy['power_type'] }}</td>
-	</tr>
-	<tr>
-		<td>Units of Power:</td> <td> {{ buggy['power_units'] }}</td>
-	</tr>
-  	<tr id="check_hamster_tr">
-		<td>Units of Hamster Booster:</td> <td> {{ buggy['hamster_booster'] }}</td>
-  	</tr>
-	<tr>
-		<td>Type of Auxiliary Power:</td> <td> {{ buggy['aux_power_type'] }}</td>
-	</tr>
-	<tr>
-		<td>Units of Auxiliary Power:</td> <td> {{ buggy['aux_power_units'] }}</td>
-	</tr>
-  	<tr id="check_hamster2_tr">
-		<td>Units of Auxiliary Hamster Booster:</td> <td> {{ buggy['aux_hamster_booster'] }} </td>
-  	</tr>
-	<tr>
-		<td>Armour type:</td> <td> {{ buggy['armour'] }} </td>
-	</tr>
-	<tr>
-		<td>Attack type:</td> <td> {{ buggy['attack'] }} </td>
-	</tr>
-	<tr>
-		<td>Number of Attacks:</td> <td> {{ buggy['qty_attacks'] }} </td>
-	</tr>
-	<tr>
-		<td>Fireproof?</td> <td> {{ buggy['fireproof'] }} </td>
-	</tr>
-	<tr>
-		<td>Insulated?</td> <td> {{ buggy['insulated'] }} </td>
-	</tr>
-	<tr>
-		<td>Antibiotic?</td> <td> {{ buggy['antibiotic'] }} </td>
-	</tr>
-	<tr>
-		<td>Banging sound system?</td> <td> {{ buggy['banging'] }} </td>
-	</tr>
-	<tr>
-		<td>Cost Limit:</td> <td> {{ cost_limit }} </td>
-	</tr>
-	<tr>
-		<td style="background-color: yellow">Total Cost:</td> <td style="background-color: yellow"> {{ buggy['total_cost'] }} </td>
-	</tr>
-  </table>
+	{% for buggy in buggies %}
+		<script>
+	    	 window.onpageshow = function() {
+	        	document.getElementById("check_hamster_tr").style.display = {{ buggy['hamster_booster'] }} != 0 ? 'show' : 'hide';
+	   		 	document.getElementById("check_hamster2_tr").style.display = {{ buggy['aux_hamster_booster'] }} != 0 ? 'show' : 'hide';
+	    	 }
+		</script>
+	  	<table>
+		    <tr>
+		      <td>ID:</td> <td> {{ buggy['id'] }} </td>
+		    </tr>
+		    <tr>
+		      <td>Wheels:</td> <td> {{ buggy['qty_wheels'] }} </td>
+		    </tr>
+			<tr>
+				<td>Tyres:</td> <td> {{ buggy['tyres'] }} </td>
+			</tr>
+			<tr>
+				<td>Quantity of Tyres:</td> <td> {{ buggy['qty_tyres'] }} </td>
+			</tr>
+			<tr>
+				<td>Flag Color:</td> <td> {{ buggy['flag_color'] }} </td>
+			</tr>
+		    <tr>
+		      <td>Flag Color Secondary:</td> <td> {{ buggy['flag_color_secondary'] }} </td>
+		    </tr>
+			<tr>
+				<td>Flag Pattern:</td> <td> {{ buggy['flag_pattern'] }} </td>
+			</tr>
+			<tr>
+				<td>Type of Power:</td> <td> {{ buggy['power_type'] }}</td>
+			</tr>
+			<tr>
+				<td>Units of Power:</td> <td> {{ buggy['power_units'] }}</td>
+			</tr>
+		  	<tr id="check_hamster_tr">
+				<td>Units of Hamster Booster:</td> <td> {{ buggy['hamster_booster'] }}</td>
+		  	</tr>
+			<tr>
+				<td>Type of Auxiliary Power:</td> <td> {{ buggy['aux_power_type'] }}</td>
+			</tr>
+			<tr>
+				<td>Units of Auxiliary Power:</td> <td> {{ buggy['aux_power_units'] }}</td>
+			</tr>
+		  	<tr id="check_hamster2_tr">
+				<td>Units of Auxiliary Hamster Booster:</td> <td> {{ buggy['aux_hamster_booster'] }} </td>
+		  	</tr>
+			<tr>
+				<td>Armour type:</td> <td> {{ buggy['armour'] }} </td>
+			</tr>
+			<tr>
+				<td>Attack type:</td> <td> {{ buggy['attack'] }} </td>
+			</tr>
+			<tr>
+				<td>Number of Attacks:</td> <td> {{ buggy['qty_attacks'] }} </td>
+			</tr>
+			<tr>
+				<td>Fireproof?</td> <td> {{ buggy['fireproof'] }} </td>
+			</tr>
+			<tr>
+				<td>Insulated?</td> <td> {{ buggy['insulated'] }} </td>
+			</tr>
+			<tr>
+				<td>Antibiotic?</td> <td> {{ buggy['antibiotic'] }} </td>
+			</tr>
+			<tr>
+				<td>Banging sound system?</td> <td> {{ buggy['banging'] }} </td>
+			</tr>
+			<tr>
+				<td style="background-color: yellow">Total Cost:</td> <td style="background-color: yellow"> {{ buggy['total_cost'] }} </td>
+			</tr>
+			<tr>
+				<td colspan="2"> <a href="/edit/{{ buggy['id'] }}">edit me</a></td>
+			</td>
+		</table>
+	{% endfor %}
 
   <p>
     <a href="/" class="button">home</a>
