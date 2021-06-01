@@ -48,16 +48,18 @@ def create_buggy():
             try:    
                 cur.execute("SELECT qty_wheels FROM buggies")
                 prev_qty_wheels = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_qty_wheels = int(prev_qty_wheels)
             except:
                 prev_qty_wheels = 4
             try:
                 cur.execute("SELECT tyres FROM buggies")
                 prev_tyres = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
             except:
-                prev_tyres = 4
+                prev_tyres = "knobbly"
             try:
                 cur.execute("SELECT qty_tyres FROM buggies")
                 prev_qty_tyres = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_qty_tyres = int(prev_qty_tyres)
             except:
                 prev_qty_tyres = 4
             try:
@@ -87,6 +89,7 @@ def create_buggy():
             try:    
                 cur.execute("SELECT power_units FROM buggies")
                 prev_power_units = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_power_units = int(prev_power_units)
             except:
                 prev_power_units = 1
             
@@ -99,18 +102,21 @@ def create_buggy():
             try:    
                 cur.execute("SELECT aux_power_units FROM buggies")
                 prev_aux_power_units = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_aux_power_units = int(prev_aux_power_units)
             except:
                 prev_aux_power_units = 0
             
             try:
                 cur.execute("SELECT hamster_booster FROM buggies")
                 prev_hamster_booster = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_hamster_booster = int(prev_hamster_booster)
             except:
                 prev_hamster_booster = 0
             
             try:
                 cur.execute("SELECT aux_hamster_booster FROM buggies")
                 prev_aux_hamster_booster = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_aux_hamster_booster = int(prev_aux_hamster_booster)
             except:
                 prev_aux_hamster_booster = 0
             try:
@@ -126,6 +132,7 @@ def create_buggy():
             try:
                 cur.execute("SELECT qty_attacks FROM buggies")
                 prev_qty_attacks = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                prev_qty_attacks = int(prev_qty_attacks)
             except:
                 prev_qty_attacks = 0
             try:
@@ -157,7 +164,7 @@ def create_buggy():
                     prev_form_store[i] = "None"
             cur = con.cursor()
             cur.execute("INSERT or IGNORE INTO buggies (id, qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, aux_hamster_booster, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, total_cost) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-            (prev_id, prev_qty_wheels, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_tyres, prev_qty_tyres, prev_armour, prev_attack, prev_qty_attacks, prev_fireproof, prev_insulated, prev_antibiotic, prev_banging, 0)
+            (prev_id, prev_qty_wheels, prev_tyres, prev_qty_tyres, prev_flag_color, prev_flag_color_secondary, prev_flag_pattern, prev_power_type, prev_power_units, prev_aux_power_type, prev_aux_power_units, prev_hamster_booster, prev_aux_hamster_booster, prev_armour, prev_attack, prev_qty_attacks, prev_fireproof, prev_insulated, prev_antibiotic, prev_banging, 0)
             )
             con.commit()
             record = cur.fetchone();
