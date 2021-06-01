@@ -162,7 +162,7 @@ def create_buggy():
             con.commit()
             record = cur.fetchone();
             return render_template("buggy-form.html", buggy=record)
-        return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13], prev_attack=prev_form_store[14], prev_qty_attacks=prev_form_store[15], prev_fireproof=prev_form_store[16], prev_insulated=prev_form_store[17], prev_antibiotic=prev_form_store[18], prev_banging=prev_form_store[19])
+        #return render_template("buggy-form.html", prev_id=int(prev_form_store[0]), prev_qty_wheels=int(prev_form_store[1]), prev_flag_color=prev_form_store[2], prev_flag_color_secondary=prev_form_store[3], prev_flag_pattern=prev_form_store[4], prev_power_type=prev_form_store[5], prev_power_units=prev_form_store[6], prev_aux_power_type=prev_form_store[7], prev_aux_power_units=prev_form_store[8], prev_hamster_booster=prev_form_store[9], prev_aux_hamster_booster=prev_form_store[10], prev_tyres=prev_form_store[11], prev_qty_tyres=prev_form_store[12], prev_armour=prev_form_store[13], prev_attack=prev_form_store[14], prev_qty_attacks=prev_form_store[15], prev_fireproof=prev_form_store[16], prev_insulated=prev_form_store[17], prev_antibiotic=prev_form_store[18], prev_banging=prev_form_store[19])
     elif request.method == 'POST':
         msg = ""
         msg2 = ""
@@ -456,6 +456,19 @@ def delete_buggy(buggy_id):
     cur = con.cursor()
     cur.execute("DELETE FROM buggies WHERE id=?", (buggy_id,))
     msg = "buggy deleted coorectly!"
+    con.commit()
+    return render_template("updated.html", msg=msg)
+    
+#------------------------------------------------------------
+# delete all the buggies
+#------------------------------------------------------------
+@app.route('/delete_all')
+def delete_buggies():
+    print(f"I want to delete all the buggies")
+    con = sql.connect(DATABASE_FILE)
+    cur = con.cursor()
+    cur.execute("DELETE FROM buggies")
+    msg = "buggies deleted coorectly!"
     con.commit()
     return render_template("updated.html", msg=msg)
 

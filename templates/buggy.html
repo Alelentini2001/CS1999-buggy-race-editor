@@ -25,9 +25,11 @@
 	 
   </style>
   
-
-  <h1>Buggy</h1>
-
+	{% if buggies|length %}
+	  	<h1>Buggy</h1>
+	{% else %}
+		<h1>No Buggies, press Home</h1>
+	{% endif %}
 	{% for buggy in buggies %}
 		<script>
 	    	 window.onpageshow = function() {
@@ -105,9 +107,12 @@
 			</tr>
 		</table>
 	{% endfor %}
-
-  <p>
-    <a href="/" class="button">home</a>
-  </p>
+	{% if buggies|length %}
+		<a id="delete_all" href="/delete_all" class="button" style="background-color: red; color: white">Delete all</a><br>
+	{% endif %}
+	<br>
+ 	<p>
+    	<a href="/" class="button">home</a>
+  	</p>
 
 {% endblock %}
