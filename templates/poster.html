@@ -4,48 +4,410 @@
 <style>
   .cs1999-tasks {
     border-top: 1px solid black;
-    margin-top: 4em;
+    margin-top: -1em;
+	margin-bottom: 1em;
+	background-color: white;
+	box-shadow:black 5px 5px 5px
   }
-  .cs1999-tasks .task {
+  .task {
     margin: 1em;
     padding: 1em;
+	margin-bottom: 2em;
+	background-color: white;
+	box-shadow:black 5px 5px 5px;
     border: 1px solid black;
   }
+  .task-body {
+	  display: block;
+	  background-color: white;
+	  margin-bottom: 1em;
+	  box-shadow:black 5px 5px 5px;
+	  padding:0.5em 1em 0.5em 1em
+  }
+  .task-head {
+  	float: left;
+  	color: black;
+  	padding: 0.3em 0.5em;
+  	margin: -1.5em 1em 0 -0.5em;
+  	border-radius: 0.2em;
+  	border: 2px solid #fff;
+  	text-decoration: none;
+  	background-color: white;
+	border: 1px solid black;
+  	box-shadow:black 3px 3px 3px
+  }
+  
   .cs1999-tasks .task h2 {
     border-bottom: 3px solid gray;
   }
 </style>
 
-<!-- see tech note about the poster:  
-      https://rhul-cs-projects.github.io/CS1999-buggy-race-server/                -->
-<!--                                                                              -->
-<!-- anything you want here: make it beautiful! make it appealing! make it clear! -->
-<!-- you can drop images into static/assets if you want... and access them        -->
-<!-- here with <img src="/static/image-filename.png" alt="diagram" />             -->
-<!--                                                                              -->
-<!-- Of course you can edit static/app.css too if you want. It's your webserver,  -->
-<!--                                                                              -->
-<!-- Maybe... delete all these comments too :-)                                   -->
-
-
-<!-- below this point keep this section tag and paste in a <div> for every        -->
-<!-- task you attempted.                                                          -->
+<h1>Alessandro Lentini's Poster</h1>
 
 <section class="cs1999-tasks">
-
+	<h2>CS1999 buggy race editor</h2>
   <div class="task">
-    <h2>0-GET</h2>
-    <p>
-      I forked the repo on GitHub and then used <code>git clone</code> to make a local copy.
+      <h3 class="task-head">0-GET</h3>
+      <p class="task task-body">
+        I forked the repo on GitHub and then used <code>git clone</code> to make a local copy.
+      </p>
+      <p>
+        Once the repo was on my own machine I was able to commit changes to version control
+        as I went along, and I pushed back up to my GitHub repo at the end of each day.
+        <br>I followed GitHub's instructions and set up a SSH key so I didn't need to enter
+        username and password every time I pushed.
+		<br>Every time I used <code>git add</code> followed by all the files routes to add the new changes.
+		<br>After that i used <code>git commit -m "message to commit"</code> for explain what was about the commit.
+		<br>Finally, to check if was all correct i used <code>git status</code> and after <code>git push</code> to upload it inside my GitHub repository.
+		<br>After, I installed all the dependencies that I needed for this project running <code>pip install -r requirements.txt</code> inside the terminal, in the project's folder.
+      </p>
+    </div>
+  <div class="task">
+    <h3 class="task-head">0-RUN Get app running and view it in a browser</h3>
+    <p class="task task-body">
+      I created a virtual flask enviroment using <code>export FLASK_ENV=development</code> and after i run app.py using <code>python3 app.py</code>.
     </p>
     <p>
-      Once the repo was on my own machine I was able to commit changes to version control
-      as I went along, and I pushed back up to my GitHub repo at the end of each day.
-      I followed GitHub's instructions and set up a SSH key so I didn't need to enter
-      username and password every time I pushed.
+      Once the app.py was runned I jumped into my main browser and i followed the special IP address gave me from <code>python3 app.py</code> output, so I searched on the web tab for <code>http://127.0.0.1:5000</code> but after some migliorities of the code, I always used <code>http://localhost:5000</code> for semplicity.
+	  Thanks to <code>export FLASK_ENV=development</code> I can edit the code without running <code>python3 app.py</code> each time I edit It.
     </p>
   </div>
+  <div class="task">
+    <h4 class="task-head">0-CHANGE Make a change to a template and see it appear</h4>
+    <p class="task task-body">
+      I edited the <code>index.html</code> page to demonstrate that I can edit/change the html code.
+    </p>
+    <p>
+      I did that by adding a paragraph at the end of the webpage with this code: <code><</code>p> -- Smoke Test :) -- </code><<code>/p></code>.
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">1-ADD Add more data to the form</h3>
+    <p class="task task-body">
+      For adding new data inside the form and inside the database I followed the next steps:
+    </p>
+    <p>
+      •	I added to <code>buggy-form.html</code> a label for the buggy ID, and after that I added the input with type <code>number</code> for that; I added a label for the flag colour, for the secondary colour of the flag and for the flag pattern (all of them with <code>input type="text"</code>).
+    </p>
+	<p>• I added row inside <code>buggy.html</code> for showing the flag color call his value from the database using flask calling it with <code>{<code>{ buggy['flag_color'] }</code>}</code>.
+	</p>
+	<p>• Added to <code>app.py</code> the following code <code>qty_wheels = request.form['qty_wheels']</code> and <code>flag_color = request.form['flag_color']</code> for get from <code>buggy-form.html</code> the input for the quantity of the wheels and the colour of the flag.
+	  Sucessively I updated the database connecting it to the <code>app.py</code> code and uploading this new inputs with this:
+	<br>
+	<code>
+	try:
+	<br>with sql.connect(DATABASE_FILE) as con:
+	<br>cur = con.cursor()
+	<br>cur.execute(
+	<br>"UPDATE buggies SET qty_wheels=?, flag_color=? WHERE id=?",
+	<br>(qty_wheels, flag_color, DEFAULT_BUGGY_ID)
+	<br>)
+	<br>con.commit()
+	</code>
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">1-VALID Add basic data validation</h3>
+    <p class="task task-body">
+      In this section I checked for all the data input possible errors.
+    </p>
+    <p>
+      I added to <code>buggy-form.html</code> a paragraph for showing the errors during the validation part using flask and <code>{<code>{msg</code>}}</code> inside the html file.
+	  <br>After I added to <code>app.py</code> this if statement for check if the input was a number or not and if not it returns the error message to the top of the page:
+	  <br><code>flag_color = request.form['flag_color']
+      <br>if not qty_wheels.isdigit():
+             <br>msg = f"Oh noes, that is not a number: {qty_wheels}"
+             <br>return render_template("buggy-form.html", msg = msg)
+	  </code>
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">1-STYLE Style your editor just how you like it</h3>
+    <p class="task task-body">
+      In this task I edit the <code>app.css</code> file and i wrote the following code to make all look better:
+    </p>
+    <p>
+      <code>
+		  <<code>style>
+		  <br>* {
+		       box-sizing: border-box;
+		     }
 
+		  <br>input[type=text], select, textarea {
+		       width: 100%;
+		       padding: 12px;
+		       border: 1px solid #ccc;
+		       border-radius: 4px;
+		       resize: vertical;
+		     }
+
+		  <br>input[type=number], select, textarea {
+		       width: 100%;
+		       padding: 12px;
+		       border: 1px solid #ccc;
+		       border-radius: 4px;
+		       resize: vertical;
+		     }
+
+		  <br>label {
+		       padding: 12px 12px 12px 0;
+		       display: inline-block;
+		     }
+
+		  <br>input[type=submit] {
+		       background-color: #4CAF50;
+		       color: white;
+		       padding: 12px 20px;
+		       border: none;
+		       border-radius: 4px;
+		       cursor: pointer;
+		       float: right;
+		     }
+		  <br>.home {
+		         color: white;
+		         padding: 12px 20px;
+		         border: none;
+		         border-radius: 4px;
+		         cursor: pointer;
+		         float: left;
+		     }
+
+		  <br>input[type=submit]:hover {
+		       background-color: #45a049;
+		     }
+
+		  <br>.container {
+		       border-radius: 5px;
+		       background-color: #f2f2f2;
+		       padding: 20px;
+		     }
+
+		  <br>.col-25 {
+		       float: left;
+		       width: 25%;
+		       margin-top: 6px;
+		     }
+
+		  <br>.col-75 {
+		       float: left;
+		       width: 75%;
+		       margin-top: 6px;
+		     }
+
+		  <br>/* Clear floats after the columns */
+		  <br>.row:after {
+		       content: "";
+		       display: table;
+		       clear: both;
+		     }
+
+		  <br>/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+		  <br>@media screen and (max-width: 600px) {
+		  <br>  .col-25, .col-75, input[type=submit] {
+		         width: 100%;
+		         margin-top: 0;
+		       }
+		     }
+		   <br><code></code><</code>/style</code>>
+	  <code>
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">2-EDIT Edit the record by loading its current values into the form</h3>
+    <p class="task task-body">
+      For this part of the project I added all the inputs in the database on <code>init_db.py</code>, after I added them to the form on <code>buggy-form.html</code> and finally i recorded them on <code>app.py</code>.
+    </p>
+    <p>
+      As I previously did, I get the values from the form with the request method on <code>app.py</code>, I store them inside a list for use it inside a for loop that check if all the fields (inputs) are not empty.
+	  <br>Nextly I updated the execution of the databas "UPDATE" method adding all the new inputs values and finally I shows them on the <code>buggy.html</code> table.
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">2-FORM Make the form better</h3>
+    <p class="task task-body">
+      To make the form better I added a css style code inside <code>buggy-form.html</code> to edit the style of the page and of the input requests.
+    </p>
+    <p>
+      I changed all the html tags style as <code>box-sizing: border-box;</code> calling before them with <code>* {...}</code>.
+	  <br>After I edited the differents inputs by calling them also with theyr types and I also created different class for buttons and for divs (divisors).
+	  <br>At this stage I. also created the <code>poster.html</code> page and also the <code>404.html</code> by calling them inside the <code>app.py</code> as new routes for the link.
+	  <br>I also created a button link route inside <code>index.html</code> for navigate to the poster page.
+  </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">2-COST Calculate and save the game cost of the buggy</h3>
+    <p class="task task-body">
+      In this phase I calculated the initial cost of the buggy with the values I had.
+    </p>
+    <p>
+      For calcolating the cost of the buggy I had to add input values and use them to get the cost based in all the informations gave by the given table.
+	  <br>In this stage I also had to added the inputs in the database and inside the <code>app.py</code> file and also show the error gave in case of an inpossibility of updating the database (so I can know where was the problem and what generates it).
+	  <br>An interesting challenge was adding the case of the Hamster booster as a style inside <code>buggy-form.html</code> because I had also to use a javascript code to check if was selected inside the <code>select</code> input or not, in the case was selected it show to the user another number input for asking how many quantity of booster he/she wanted to add.
+	  <br>I also added some <code>select</code> inputs for asking if some buggy implementations (for eg. fireproof) were added or not, instead of using the current selections I addedd buttons under them to an easier use (also for coding semplifications).
+	  <br>Sometimes I had to clean the style of the code for a better understanding of it in case someone wanted to check it.
+	  <br>At the end I calculated the cost of everything by using if methods.
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">2-RULES Add validation according to the game rules</h3>
+    <p class="task task-body">
+      In this task I created (as previously mentioned) the rules of the buggy for calculating the cost of it.
+    </p>
+    <p>
+      I also returned in case of error, the same html page (<code>buggy-form.html</code>) but saving the inputs and not refreshing the page and lose everything, so I had to create inside the "GET" part, a previous value store for not lose the data added in the page.
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-ENV Switch between dev and production environments</h3>
+	<br>
+    <p class="task task-body">
+      I did this stage at the start of the project.
+    </p>
+    <p>
+      <!-- ................ -->
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-AUTOFILL Add auto-fill to the edit forms</h3>
+    <p class="task task-body">
+      In this task, thanks to the previously session, I stored the prev. data and call it back in the "GET" section inside <code>app.py</code>.
+    </p>
+    <p>
+      I also addedd a cost limit input and button in case the user wanted to generate a random buggy with a cost under this limit.
+	  <br>If the user inserted this cost limit and he pressed the Cost Limit submit button or just the normal Submit button, the page refreshed and save the random buggy inside the database.
+	  <br>A good challenge here was getting a random key inside the dictionary with the values and after get the same values and use them for the cost limit calulation using also lots of if statements for check if the cost limit was > 0 (I was alwasy subtracting the cost limit based of the random inputs values).
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-MULTI Allow different buggies to be created</h3>
+    <p class="task task-body">
+      In this task I had to edit the way to update the database and I had to remove the costant buggy ID to implement the option of adding new buggies.
+    </p>
+    <p>
+      Was quite challenging this task, mostly for the fact of adding and updating buggies with different and same IDs, and also the problem of adding another app route for editing it.
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-DEL Allow buggies to be deleted</h3>
+    <p class="task task-body">
+      In this task I had to create another app route for deleting the selected buggy or all the buggies by pressing a button.
+    </p>
+    <p>
+      Here I had some problems on deleting all the buggies because I wrongly copied and paste the app route of <code>/delete</code> the single buggie but I didn't change the name of the function so I had the error message for that (after I learned the "lesson" to don't do it or to check everything before running it).
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-FLAG Display the pennant graphically</h3>
+    <p class="task task-body">
+      Added the Flag pattern in the <code>buggy-form.html</code> inside the table.
+    </p>
+    <p>
+      I learned a lot about svg and png implementation here, also because of the challenge to change the color of the pennant (flag color).
+	  <br>I was struggeling at the start but finally I found a way to do it thanks to lots of articles and tutorials on the web (project research).
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">3-TESTS Write some tests</h3>
+    <p class="task task-body">
+      Addedd the Test file tutorial for manual testing by the user.
+    </p>
+    <p>
+      In this task I also added the possibility of showing the json of all the buggies inside the database and the normal json for just the first buggy, that was challenging for the storage of the different bugies' jsons.
+    </p>
+  </div>
+<!--
+  <div class="task">
+    <h3 class="task-head">4-USERS Add users (and sessions) so you know who is editing a buggy</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it 
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">4-REGISTER Make a new user</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">4-OWNER A buggy belongs to a user</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">4-PASS Add password protection to the users</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">5-VIZ Visual representation of the buggy</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">5-RESET Password reset</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">5-RACELOG Store a history of race results for the buggies in your app</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">5-ADMIN Add admin capabilities to superusers</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">5-API Use the server API for submitting the buggy data</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+  <div class="task">
+    <h3 class="task-head">6-FREE Add custom features to the editor</h3>
+    <p class="task task-body">
+       sentence on _how_ you fixed it
+    </p>
+    <p>
+       sentence(s) on anything interesting/incomplete you did
+    </p>
+  </div>
+-->
+  <br>
 
 <!-- this closes the section: keep it in! -->
 </section>
