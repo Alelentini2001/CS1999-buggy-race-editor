@@ -16,11 +16,69 @@ BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    what = "Log In"
     if request.method == 'POST':
         session['username'] = request.form['username']
+        session['password'] = request.form['password']
+        usr = session['username']
+        psw = session['password']
+        try:
+            with sql.connect(DATABASE_FILE) as con:
+                cur = con.cursor()
+                cur.execute("SELECT password FROM buggies WHERE username=?", (usr,))
+                check_psw = str(cur.fetchone()).replace(",","").replace("(", "").replace(")","");
+                print(check_psw.replace("'",""))
+                if psw == check_psw.replace("'",""):
+                    return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL, user=usr)
+                else:
+                    msg = "Wrong Password"
+                    return render_template("updated.html", msg = msg)
+        except sql.connect(DATABASE_FILE).Error as err:
+            con.rollback()
+            print("Something went wrong: {}".format(err))
+            msg = "error in update operation"
+        finally:
+            con.close()
         return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL, user=session['username'])
-    return render_template('login.html')
+    return render_template('login.html', what=what)
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    what = "Register"
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        session['password'] = request.form['password']
+        usr = session['username']
+        psw = session['password']
+        try:
+            with sql.connect(DATABASE_FILE) as con:
+                cur = con.cursor()
+                cur.execute("SELECT username FROM buggies")
+                check_usr = str(cur.fetchall()).replace(",","").replace("(", "").replace(")","");
+                try:
+                    if usr not in check_usr:
+                        cur.execute("INSERT INTO buggies (username, password) VALUES (?,?)", 
+                        (usr, psw)
+                        )
+                    else:
+                        cur.execute(
+                        "UPDATE buggies SET username=?, password=?",
+                        (usr, psw)
+                        )
+                except:
+                    cur.execute("INSERT INTO buggies (username, password) VALUES (?,?)", 
+                    (usr, psw)
+                    )
+                con.commit()
+                msg = "Record successfully saved"
+        except sql.connect(DATABASE_FILE).Error as err:
+            con.rollback()
+            print("Something went wrong: {}".format(err))
+            msg = "error in update operation"
+        finally:
+            con.close()
+        return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL, user=session['username'])
+    return render_template('login.html', what=what)
 
 @app.route('/logout')
 def logout():

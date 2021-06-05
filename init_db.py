@@ -44,7 +44,9 @@ connection.execute("""
     fireproof             VARCHAR(20) DEFAULT "false",
     insulated             VARCHAR(20) DEFAULT "false",
     antibiotic            VARCHAR(20) DEFAULT "false",
-    banging               VARCHAR(20) DEFAULT "false"
+    banging               VARCHAR(20) DEFAULT "false",
+    username              VARCHAR(20) DEFAULT "guest",
+    password              VARCHAR(20) DEFAULT "password"
   )
 
 """)

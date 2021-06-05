@@ -6,7 +6,7 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Full-width input fields */
-input[type=text]{
+input[type=text], [type=password]{
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -39,11 +39,6 @@ button:hover {
 
 .container {
   padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
 }
 
 /* The Modal (background) */
@@ -123,9 +118,9 @@ window.onclick = function(event) {
 
 {% block content %}
 
-  <h2>Buggy Race Log In</h2>
+  <h2>Buggy Race {{ what }}</h2>
 
-  <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+  <button onclick="document.getElementById('id01').style.display='block'" style="width:130px; height:auto; font-size: 15px">{{ what }}</button>
 
   <div id="id01" class="modal">
   
@@ -134,8 +129,11 @@ window.onclick = function(event) {
       <div class="container">
         <label id="username" for="username"><b>Username</b></label>
         <input id="username" type="text" placeholder="Enter Username" name="username" required>
+		
+        <label id="password" for="password"><b>Password</b></label>
+        <input id="password" type="text" placeholder="Enter Password" name="password" required>
 
-        <button type="submit">Login</button>
+        <button type="submit">{{ what }}</button>
       </div>
 
       <div class="container" style="background-color:#f1f1f1">
@@ -145,3 +143,7 @@ window.onclick = function(event) {
   </div>
 
 {% endblock %}
+	<br>
+ 	<p>
+    	<a href="/" class="button">home</a>
+  	</p>
