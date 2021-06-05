@@ -5,6 +5,14 @@
   <h1>
     My buggy editor
   </h1>
+  {% if user == "Not Logged!" %}
+  	<div style='position:absolute; top:25px; right: 10px;'><a href="/login" class="button">Log In</a></div>
+  {% elif user is not defined %}
+  	<div style='position:absolute; top:25px; right: 10px;'><a href="/login" class="button">Log In</a></div>
+  {% else %}
+	<div style='position:absolute; top:10px; right: 25px;'>User: {{ user }}</div>
+	<div style='position:absolute; top:50px; right: 10px;'><a href="/logout" class="button">Log Out</a></div>
+  {% endif %}
 
   <div class="spacer">
     <a href="/new" class="button">Make buggy</a>

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
+from markupsafe import escape
 import sqlite3 as sql
 
 # app - The flask application where all the magical things are configured.
@@ -12,6 +13,22 @@ BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 #------------------------------------------------------------
 # the index page
 #------------------------------------------------------------
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL, user=session['username'])
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    user = "Not Logged!"
+    return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL, user=user)
+
 @app.route('/')
 def home():
     return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL)
